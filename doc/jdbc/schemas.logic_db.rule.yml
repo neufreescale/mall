@@ -1,0 +1,7 @@
+rules:
+  - !REPLICA_QUERY
+    dataSources:
+      pr_ds:
+        name: pr_ds
+        primaryDataSourceName: primary_ds
+        replicaDataSourceNames: [ replica_ds_0 ]

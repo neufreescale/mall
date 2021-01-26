@@ -1,0 +1,49 @@
+2021-01-26 16:11:03,457 [main] INFO  org.emall.Bootstrap:55 - Starting Bootstrap on diwayou-2.local with PID 8770 (/Users/gaopeng/Downloads/java/emall/portal/target/classes started by gaopeng in /Users/gaopeng/Downloads/java/emall/portal)
+2021-01-26 16:11:03,461 [main] INFO  org.emall.Bootstrap:651 - No active profile set, falling back to default profiles: default
+2021-01-26 16:11:05,170 [main] INFO  org.pf4j.DefaultPluginStatusProvider:50 - Enabled plugins: []
+2021-01-26 16:11:05,172 [main] INFO  org.pf4j.DefaultPluginStatusProvider:54 - Disabled plugins: []
+2021-01-26 16:11:05,178 [main] INFO  org.pf4j.DefaultPluginManager:119 - PF4J version 3.5.0 in 'deployment' mode
+2021-01-26 16:11:05,182 [main] WARN  org.pf4j.AbstractPluginManager:222 - No 'plugins' root
+2021-01-26 16:11:05,186 [main] INFO  org.pf4j.AbstractPluginManager:231 - No plugins
+2021-01-26 16:12:05,023 [main] INFO  org.diwayou.jdbc.DatabaseAutoConfiguration:47 - auto config database with namespace op.db.test
+2021-01-26 16:12:05,194 [main] INFO  com.zaxxer.hikari.HikariDataSource:110 - MasterHikariCP - Starting...
+2021-01-26 16:12:05,457 [main] INFO  com.zaxxer.hikari.HikariDataSource:123 - MasterHikariCP - Start completed.
+2021-01-26 16:12:05,531 [main] INFO  com.zaxxer.hikari.HikariDataSource:110 - SlaveHikariCP - Starting...
+2021-01-26 16:12:05,536 [main] INFO  com.zaxxer.hikari.HikariDataSource:123 - SlaveHikariCP - Start completed.
+2021-01-26 16:12:05,552 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext:559 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'healthEndpointGroupsBeanPostProcessor' defined in class path resource [org/springframework/boot/actuate/autoconfigure/health/HealthEndpointConfiguration.class]: BeanPostProcessor before instantiation of bean failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration': BeanPostProcessor before instantiation of bean failed; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'transactionAdvisor' defined in class path resource [org/diwayou/jdbc/DatabaseConfiguration.class]: Unsatisfied dependency expressed through method 'transactionAdvisor' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/diwayou/jdbc/DatabaseAutoConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.sql.DataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.RuntimeException: java.lang.IllegalStateException: Shutdown in progress
+2021-01-26 17:16:58,509 [main] INFO  org.emall.Bootstrap:55 - Starting Bootstrap on diwayou-2.local with PID 11336 (/Users/gaopeng/Downloads/java/emall/portal/target/classes started by gaopeng in /Users/gaopeng/Downloads/java/emall/portal)
+2021-01-26 17:16:58,513 [main] INFO  org.emall.Bootstrap:651 - No active profile set, falling back to default profiles: default
+2021-01-26 17:17:00,211 [main] INFO  org.pf4j.DefaultPluginStatusProvider:50 - Enabled plugins: []
+2021-01-26 17:17:00,212 [main] INFO  org.pf4j.DefaultPluginStatusProvider:54 - Disabled plugins: []
+2021-01-26 17:17:00,218 [main] INFO  org.pf4j.DefaultPluginManager:119 - PF4J version 3.5.0 in 'deployment' mode
+2021-01-26 17:17:00,223 [main] WARN  org.pf4j.AbstractPluginManager:222 - No 'plugins' root
+2021-01-26 17:17:00,228 [main] INFO  org.pf4j.AbstractPluginManager:231 - No plugins
+2021-01-26 17:17:00,565 [main] INFO  org.diwayou.jdbc.DatabaseAutoConfiguration:47 - auto config database with namespace op.db.test
+2021-01-26 17:17:00,728 [main] INFO  com.zaxxer.hikari.HikariDataSource:110 - MasterHikariCP - Starting...
+2021-01-26 17:17:00,992 [main] INFO  com.zaxxer.hikari.HikariDataSource:123 - MasterHikariCP - Start completed.
+2021-01-26 17:17:01,014 [main] INFO  com.zaxxer.hikari.HikariDataSource:110 - SlaveHikariCP - Starting...
+2021-01-26 17:17:01,018 [main] INFO  com.zaxxer.hikari.HikariDataSource:123 - SlaveHikariCP - Start completed.
+2021-01-26 17:17:01,168 [main] INFO  ShardingSphere-metadata:64 - Loading 3 tables' meta data for unconfigured tables.
+2021-01-26 17:17:01,171 [main] INFO  ShardingSphere-metadata:64 - Loading 3 tables' meta data for unconfigured tables.
+2021-01-26 17:17:01,179 [main] INFO  ShardingSphere-metadata:64 - Loading 3 tables' meta data for unconfigured tables.
+2021-01-26 17:17:01,181 [main] INFO  ShardingSphere-metadata:64 - Loading 3 tables' meta data for unconfigured tables.
+2021-01-26 17:17:01,195 [main] INFO  o.a.s.infra.context.schema.SchemaContextsBuilder:112 - Load meta data for schema logic_db finished, cost 89 milliseconds.
+2021-01-26 17:17:01,260 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:335 - Bean 'spring.datasource-org.springframework.boot.autoconfigure.jdbc.DataSourceProperties' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceProperties] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-01-26 17:17:01,272 [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker:335 - Bean 'org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker' of type [org.springframework.boot.autoconfigure.jdbc.DataSourceInitializerInvoker] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2021-01-26 17:17:01,733 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer:108 - Tomcat initialized with port(s): 8081 (http)
+2021-01-26 17:17:01,748 [main] INFO  org.apache.coyote.http11.Http11NioProtocol:173 - Initializing ProtocolHandler ["http-nio-8081"]
+2021-01-26 17:17:01,749 [main] INFO  org.apache.catalina.core.StandardService:173 - Starting service [Tomcat]
+2021-01-26 17:17:01,749 [main] INFO  org.apache.catalina.core.StandardEngine:173 - Starting Servlet engine: [Apache Tomcat/9.0.41]
+2021-01-26 17:17:01,867 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/]:173 - Initializing Spring embedded WebApplicationContext
+2021-01-26 17:17:01,867 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext:285 - Root WebApplicationContext: initialization completed in 2992 ms
+2021-01-26 17:17:02,261 [main] WARN  org.diwayou.jdbc.DatabaseConfiguration:60 - class path resource [mybatis/] cannot be resolved to URL because it does not exist
+2021-01-26 17:17:02,687 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor:181 - Initializing ExecutorService 'applicationTaskExecutor'
+2021-01-26 17:17:03,133 [main] INFO  o.s.b.actuate.endpoint.web.EndpointLinksResolver:58 - Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-01-26 17:17:03,166 [main] INFO  org.apache.coyote.http11.Http11NioProtocol:173 - Starting ProtocolHandler ["http-nio-8081"]
+2021-01-26 17:17:03,209 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer:220 - Tomcat started on port(s): 8081 (http) with context path ''
+2021-01-26 17:17:03,225 [main] INFO  org.emall.Bootstrap:61 - Started Bootstrap in 5.332 seconds (JVM running for 6.024)
+2021-01-26 17:17:11,154 [SpringContextShutdownHook] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor:218 - Shutting down ExecutorService 'applicationTaskExecutor'
+2021-01-26 17:17:11,157 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource:350 - MasterHikariCP - Shutdown initiated...
+2021-01-26 17:17:11,169 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource:352 - MasterHikariCP - Shutdown completed.
+2021-01-26 17:17:11,169 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource:350 - SlaveHikariCP - Shutdown initiated...
+2021-01-26 17:17:11,170 [SpringContextShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource:352 - SlaveHikariCP - Shutdown completed.

@@ -1,0 +1,28 @@
+dataSources:
+  primary_ds:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    props:
+      jdbcUrl: jdbc:mysql://127.0.0.1:3306/demo_ds_master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      username: root
+      password:
+      minimumIdle: 5
+      maximumPoolSize: 500
+      autoCommit: true
+      idleTimeout: 30000
+      poolName: MasterHikariCP
+      maxLifetime: 1800000
+      connectionTimeout: 30000
+
+  replica_ds_0:
+    dataSourceClassName: com.zaxxer.hikari.HikariDataSource
+    props:
+      jdbcUrl: jdbc:mysql://127.0.0.1:3306/demo_ds_master?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+      username: root
+      password:
+      minimumIdle: 5
+      maximumPoolSize: 500
+      autoCommit: true
+      idleTimeout: 30000
+      poolName: SlaveHikariCP
+      maxLifetime: 1800000
+      connectionTimeout: 30000

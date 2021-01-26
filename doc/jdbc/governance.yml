@@ -1,0 +1,15 @@
+governance:
+  additionalConfigCenter:
+    props:
+      token: f07dbb959afa972b7d5c737e6d65aa95116b6080
+      env: FAT
+      administrator: apollo
+      portalUrl: http://apollo.66buy.com.cn
+      appId: diwayou
+    serverLists: http://apollo.test.66buy.com.cn:8080
+    type: Apollo
+  name: op.db.test
+  overwrite: false
+  registryCenter:
+    serverLists: localhost:2181
+    type: Zookeeper
