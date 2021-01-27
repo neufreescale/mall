@@ -1,6 +1,8 @@
-package org.diwayou.config;
+package org.diwayou.config.impl;
 
 import com.google.common.io.Files;
+import org.diwayou.config.ConfigListener;
+import org.diwayou.config.IConfig;
 
 import java.io.File;
 import java.io.IOException;

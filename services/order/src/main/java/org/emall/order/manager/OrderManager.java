@@ -1,6 +1,7 @@
 package org.emall.order.manager;
 
 import lombok.extern.slf4j.Slf4j;
+import org.diwayou.cache.KvCache;
 import org.diwayou.config.IConfig;
 import org.emall.order.fsm.OrderStateMachineFactory;
 import org.emall.order.model.entity.User;
@@ -24,8 +25,15 @@ public class OrderManager {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private KvCache kvCache;
+
     public void create() {
         User user = userService.get(1);
+
+        kvCache.set("test", "1");
+
+        log.info("cache test={}", kvCache.get("test"));
 
         userService.create();
 

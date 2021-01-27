@@ -1,5 +1,6 @@
 package org.diwayou.config;
 
+import org.diwayou.config.impl.ApolloConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

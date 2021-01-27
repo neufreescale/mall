@@ -1,8 +1,11 @@
-package org.diwayou.config;
+package org.diwayou.config.impl;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
 import com.ctrip.framework.apollo.model.ConfigChange;
+import org.diwayou.config.ConfigEvent;
+import org.diwayou.config.ConfigListener;
+import org.diwayou.config.IConfig;
 
 import java.util.Collections;
 
