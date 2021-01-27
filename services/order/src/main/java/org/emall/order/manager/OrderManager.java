@@ -27,6 +27,8 @@ public class OrderManager {
     public void create() {
         User user = userService.get(1);
 
+        userService.create();
+
         log.info("{}", user);
     }
 }

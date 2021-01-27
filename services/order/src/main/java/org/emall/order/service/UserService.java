@@ -16,6 +16,10 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
+    public void create() {
+
+    }
+
     public User get(Integer id) {
         Objects.requireNonNull(id);
 

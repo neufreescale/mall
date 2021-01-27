@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>core</module>
-        <module>plugin</module>
         <module>config</module>
         <module>fsm</module>
         <module>jdbc</module>

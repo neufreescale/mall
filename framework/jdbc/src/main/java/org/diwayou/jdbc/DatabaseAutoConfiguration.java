@@ -2,18 +2,20 @@ package org.diwayou.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
 import org.diwayou.config.IConfig;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.transaction.TransactionManagerCustomizers;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Role;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -22,7 +24,6 @@ import javax.sql.DataSource;
  * @author gaopeng 2021/1/20
  */
 @Configuration(proxyBeanMethods = false)
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
 @ConditionalOnProperty(prefix = "database", value = "namespace")
 @EnableTransactionManagement
 @Import({DatabaseConfiguration.class})
@@ -34,14 +35,12 @@ public class DatabaseAutoConfiguration implements EnvironmentAware {
     private Environment environment;
 
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public DatabaseFactory databaseFactory(IConfig iConfig) {
         return new DatabaseFactory(iConfig);
     }
 
     @Bean
     @ConditionalOnMissingBean(name = "dataSource")
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public DataSource dataSource(DatabaseFactory databaseFactory) {
         String ns = environment.getProperty("database.namespace");
         log.info("auto config database with namespace {}", ns);
@@ -51,6 +50,15 @@ public class DatabaseAutoConfiguration implements EnvironmentAware {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(PlatformTransactionManager.class)
+    public DataSourceTransactionManager transactionManager(DataSource dataSource,
+                                                    ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers) {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+        transactionManagerCustomizers.ifAvailable((customizers) -> customizers.customize(transactionManager));
+        return transactionManager;
     }
 
     @Override

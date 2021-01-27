@@ -6,6 +6,9 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.aop.aspectj.*;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -14,9 +17,7 @@ import org.springframework.context.annotation.Role;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
-import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.interceptor.NameMatchTransactionAttributeSource;
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
@@ -31,8 +32,7 @@ import java.util.Collections;
  */
 @Slf4j
 @Configuration(proxyBeanMethods = false)
-@Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-public class DatabaseConfiguration implements EnvironmentAware {
+public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware {
 
     private static final String DAO_XML_PATH = "classpath:mybatis/**/*Mapper.xml";
 
@@ -45,8 +45,9 @@ public class DatabaseConfiguration implements EnvironmentAware {
 
     private Environment environment;
 
+    private BeanFactory beanFactory;
+
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
@@ -64,7 +65,6 @@ public class DatabaseConfiguration implements EnvironmentAware {
     }
 
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public MapperScannerConfigurer mapperScannerConfigurer() {
         String scanPackage = environment.getProperty("daoScanPackage", StringUtils.join(DAO_BASE_PACKAGE, ","));
 
@@ -75,8 +75,6 @@ public class DatabaseConfiguration implements EnvironmentAware {
         return configurer;
     }
 
-    @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public NameMatchTransactionAttributeSource nameMatchTransactionAttributeSource() {
         /*只读事务，不做更新操作*/
         RuleBasedTransactionAttribute readOnlyTx = new RuleBasedTransactionAttribute();
@@ -106,11 +104,14 @@ public class DatabaseConfiguration implements EnvironmentAware {
      */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public AspectJExpressionPointcutAdvisor transactionAdvisor(DataSource dataSource) {
-        TransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+    public AspectJExpressionPointcutAdvisor transactionAdvisor() {
+        TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
+        transactionInterceptor.setTransactionAttributeSource(nameMatchTransactionAttributeSource());
+        transactionInterceptor.setTransactionManagerBeanName("transactionManager");
+        transactionInterceptor.setBeanFactory(this.beanFactory);
 
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
-        advisor.setAdvice(new TransactionInterceptor(transactionManager, nameMatchTransactionAttributeSource()));
+        advisor.setAdvice(transactionInterceptor);
         advisor.setExpression(getTransactionPointcutExpression());
 
         return advisor;
@@ -127,7 +128,8 @@ public class DatabaseConfiguration implements EnvironmentAware {
         advisor.setOrder(Integer.MIN_VALUE);
 
         AspectInstanceFactory aspectInstanceFactory = new SingletonAspectInstanceFactory(new ShardingsphereRWRouter());
-        AspectJAroundAdvice aroundAdvice = new AspectJAroundAdvice(ShardingsphereRWRouter.class.getMethod("determineReadOrWriteDB", ProceedingJoinPoint.class),
+        AspectJAroundAdvice aroundAdvice = new AspectJAroundAdvice(
+                ShardingsphereRWRouter.class.getMethod("determineReadOrWriteDB", ProceedingJoinPoint.class),
                 (AspectJExpressionPointcut) advisor.getPointcut(),
                 aspectInstanceFactory);
 
@@ -139,5 +141,10 @@ public class DatabaseConfiguration implements EnvironmentAware {
     @Override
     public void setEnvironment(Environment environment) {
         this.environment = environment;
+    }
+
+    @Override
+    public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 }

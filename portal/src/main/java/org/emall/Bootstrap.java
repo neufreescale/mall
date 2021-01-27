@@ -1,7 +1,6 @@
 package org.emall;
 
 import org.diwayou.fsm.annotation.EnableStateMachine;
-import org.diwayou.pf.annotation.EnablePlugin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author gaopeng 2021/1/15
  */
 @SpringBootApplication
-@EnablePlugin
 @EnableStateMachine
 public class Bootstrap {
 

@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>org.emall</groupId>
-      <artifactId>plugin</artifactId>
+      <artifactId>core</artifactId>
     </dependency>
 
     <dependency>
