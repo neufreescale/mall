@@ -29,7 +29,7 @@
 
         <dependency>
             <groupId>org.emall</groupId>
-            <artifactId>fsm</artifactId>
+            <artifactId>dubbo</artifactId>
         </dependency>
 
         <dependency>

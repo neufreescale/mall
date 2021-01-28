@@ -1,7 +1,6 @@
 package org.diwayou.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
-import org.diwayou.config.IConfig;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -35,8 +34,8 @@ public class DatabaseAutoConfiguration implements EnvironmentAware {
     private Environment environment;
 
     @Bean
-    public DatabaseFactory databaseFactory(IConfig iConfig) {
-        return new DatabaseFactory(iConfig);
+    public DatabaseFactory databaseFactory() {
+        return new DatabaseFactory();
     }
 
     @Bean

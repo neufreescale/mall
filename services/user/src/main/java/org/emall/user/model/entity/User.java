@@ -1,16 +1,17 @@
-package org.emall.order.model.entity;
+package org.emall.user.model.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.diwayou.core.bean.Convertible;
 
 /**
  * @author gaopeng 2021/1/21
  */
 @Data
 @NoArgsConstructor
-public class User {
+public class User implements Convertible {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 }

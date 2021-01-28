@@ -2,10 +2,8 @@ package org.emall.order.manager;
 
 import lombok.extern.slf4j.Slf4j;
 import org.diwayou.cache.KvCache;
-import org.diwayou.config.IConfig;
 import org.emall.order.fsm.OrderStateMachineFactory;
-import org.emall.order.model.entity.User;
-import org.emall.order.service.UserService;
+import org.emall.order.thirdparty.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,26 +15,21 @@ import org.springframework.stereotype.Component;
 public class OrderManager {
 
     @Autowired
-    private IConfig config;
-
-    @Autowired
     private OrderStateMachineFactory orderStateMachineFactory;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private KvCache kvCache;
 
-    public void create() {
-        User user = userService.get(1);
+    @Autowired
+    private UserManager userManager;
 
+    public void create() {
         kvCache.set("test", "1");
 
         log.info("cache test={}", kvCache.get("test"));
 
-        userService.create();
+        log.info("user={}", userManager.get(1L));
 
-        log.info("{}", user);
+        orderStateMachineFactory.create();
     }
 }

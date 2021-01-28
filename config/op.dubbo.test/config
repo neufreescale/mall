@@ -1,0 +1,2 @@
+dubbo.registry.address = zookeeper://localhost:2181?backup=localhost:2181
+dubbo.protocol.name = dubbo

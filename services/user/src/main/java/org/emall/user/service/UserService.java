@@ -1,7 +1,7 @@
-package org.emall.order.service;
+package org.emall.user.service;
 
-import org.emall.order.dao.UserDao;
-import org.emall.order.model.entity.User;
+import org.emall.user.dao.UserDao;
+import org.emall.user.model.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class UserService {
 
     }
 
-    public User get(Integer id) {
+    public User get(Long id) {
         Objects.requireNonNull(id);
 
         return userDao.get(id);

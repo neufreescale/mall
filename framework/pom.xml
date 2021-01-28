@@ -18,6 +18,7 @@
         <module>jdbc</module>
         <module>cache</module>
         <module>mq</module>
+        <module>dubbo</module>
     </modules>
 
     <properties>

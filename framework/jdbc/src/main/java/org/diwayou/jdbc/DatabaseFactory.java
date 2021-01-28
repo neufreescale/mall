@@ -11,7 +11,7 @@ import org.apache.shardingsphere.infra.config.datasource.DataSourceConfiguration
 import org.apache.shardingsphere.infra.config.datasource.DataSourceConverter;
 import org.apache.shardingsphere.infra.yaml.engine.YamlEngine;
 import org.apache.shardingsphere.infra.yaml.swapper.YamlRuleConfigurationSwapperEngine;
-import org.diwayou.config.IConfig;
+import org.diwayou.config.ConfigApi;
 import org.diwayou.jdbc.configuration.RootConfiguration;
 import org.diwayou.jdbc.configuration.StaticConfiguration;
 
@@ -30,14 +30,8 @@ public class DatabaseFactory {
 
     private static final String KEY = "db";
 
-    private IConfig iConfig;
-
-    public DatabaseFactory(IConfig iConfig) {
-        this.iConfig = iConfig;
-    }
-
     public DataSource create(String namespace) throws IOException, SQLException {
-        String yaml = iConfig.getProperty(namespace, KEY);
+        String yaml = ConfigApi.getProperty(namespace, KEY);
         if (StringUtils.isBlank(yaml)) {
             throw new RuntimeException(String.format("yaml is empty %s %s", namespace, KEY));
         }

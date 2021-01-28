@@ -5,6 +5,8 @@ package org.diwayou.config;
  */
 public interface IConfig {
 
+    String APP_NAME_KEY = "appName";
+
     String getProperty(String namespace, String key);
 
     void addListener(String namespace, String key, ConfigListener listener);

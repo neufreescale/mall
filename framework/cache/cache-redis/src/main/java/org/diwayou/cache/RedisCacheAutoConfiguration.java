@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.diwayou.cache.configuration.RedisFactory;
 import org.diwayou.cache.impl.RedisHashCache;
 import org.diwayou.cache.impl.RedisKvCache;
-import org.diwayou.config.IConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -29,8 +28,8 @@ public class RedisCacheAutoConfiguration {
     private Environment environment;
 
     @Bean
-    public RedisFactory redisFactory(IConfig iConfig) {
-        return new RedisFactory(iConfig);
+    public RedisFactory redisFactory() {
+        return new RedisFactory();
     }
 
     @Bean
