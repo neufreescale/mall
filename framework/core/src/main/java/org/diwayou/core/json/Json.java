@@ -1,6 +1,8 @@
 package org.diwayou.core.json;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
@@ -17,7 +19,22 @@ import java.util.List;
 @Slf4j
 public class Json {
 
+    private static final Json defaultInstance = new Json(Include.NON_NULL);
+
     private ObjectMapper mapper;
+
+    public static Json I() {
+        return defaultInstance;
+    }
+
+    public Json(Include include) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(include);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, true);
+
+        this.mapper = mapper;
+    }
 
     public Json(ObjectMapper mapper) {
         this.mapper = mapper;

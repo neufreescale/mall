@@ -18,6 +18,11 @@ public class MemoryKvCache implements KvCache {
     }
 
     @Override
+    public void set(String key, String value, long ttl) {
+        set(key, value);
+    }
+
+    @Override
     public String get(String key) {
         return cache.get(key);
     }
