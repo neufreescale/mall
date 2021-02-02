@@ -43,6 +43,7 @@
         <squirrel.version>0.3.8</squirrel.version>
         <apollo.version>1.7.0</apollo.version>
         <dubbo.version>2.7.8</dubbo.version>
+        <rocketmq.version>2.2.0</rocketmq.version>
 
         <framework.version>1.0-SNAPSHOT</framework.version>
         <mall.version>1.0-SNAPSHOT</mall.version>
@@ -162,6 +163,11 @@
                 <artifactId>dubbo</artifactId>
                 <version>${dubbo.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.rocketmq</groupId>
+                <artifactId>rocketmq-spring-boot-starter</artifactId>
+                <version>${rocketmq.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.emall</groupId>
@@ -201,6 +207,11 @@
             <dependency>
                 <groupId>org.emall</groupId>
                 <artifactId>mq-api</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>mq-common</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>

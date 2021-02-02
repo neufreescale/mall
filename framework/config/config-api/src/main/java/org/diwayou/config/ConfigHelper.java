@@ -31,4 +31,8 @@ public class ConfigHelper {
 
         configurableEnvironment.getPropertySources().addLast(new PropertiesPropertySource(namespace + "_" + key, properties));
     }
+
+    public static void injectToEnvironment(String propertyName, String propertyValue) {
+        GlobalConfig.put(propertyName, propertyValue);
+    }
 }

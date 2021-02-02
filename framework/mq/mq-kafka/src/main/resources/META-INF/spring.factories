@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+org.diwayou.mq.MqKafkaAutoConfiguration
+org.springframework.context.ApplicationContextInitializer=\
+org.diwayou.mq.KafkaApplicationContextInitializer

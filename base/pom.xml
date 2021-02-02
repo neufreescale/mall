@@ -44,6 +44,11 @@
 
         <dependency>
             <groupId>org.emall</groupId>
+            <artifactId>mq-kafka</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.emall</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
 

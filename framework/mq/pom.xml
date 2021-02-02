@@ -16,6 +16,7 @@
     <module>mq-api</module>
     <module>mq-rocketmq</module>
     <module>mq-kafka</module>
+      <module>mq-common</module>
   </modules>
 
   <properties>
