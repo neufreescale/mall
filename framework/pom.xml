@@ -19,6 +19,7 @@
         <module>cache</module>
         <module>mq</module>
         <module>dubbo</module>
+        <module>job</module>
     </modules>
 
     <properties>

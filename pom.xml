@@ -44,6 +44,7 @@
         <apollo.version>1.7.0</apollo.version>
         <dubbo.version>2.7.8</dubbo.version>
         <rocketmq.version>2.2.0</rocketmq.version>
+        <elasticjob.version>3.0.0-beta</elasticjob.version>
 
         <framework.version>1.0-SNAPSHOT</framework.version>
         <mall.version>1.0-SNAPSHOT</mall.version>
@@ -168,6 +169,11 @@
                 <artifactId>rocketmq-spring-boot-starter</artifactId>
                 <version>${rocketmq.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.apache.shardingsphere.elasticjob</groupId>
+                <artifactId>elasticjob-lite-core</artifactId>
+                <version>${elasticjob.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.emall</groupId>
@@ -222,6 +228,16 @@
             <dependency>
                 <groupId>org.emall</groupId>
                 <artifactId>mq-rocketmq</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>job-api</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>job-elastic</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>

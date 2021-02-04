@@ -2,6 +2,8 @@ package org.diwayou.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.context.properties.bind.Binder;
+import org.springframework.boot.context.properties.source.MapConfigurationPropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 
@@ -16,10 +18,20 @@ import java.util.Properties;
 public class ConfigHelper {
 
     public static void injectToEnvironment(String namespace, String key, ConfigurableEnvironment configurableEnvironment) {
+        Properties properties = parseToProperties(namespace, key);
+
+        configurableEnvironment.getPropertySources().addLast(new PropertiesPropertySource(namespace + "_" + key, properties));
+    }
+
+    public static void injectToEnvironment(String propertyName, String propertyValue) {
+        GlobalConfig.put(propertyName, propertyValue);
+    }
+
+    public static Properties parseToProperties(String namespace, String key) {
         String content = ConfigApi.getProperty(namespace, key);
         if (StringUtils.isBlank(content)) {
             log.warn("content is empty namespace={},key={}", namespace, key);
-            return;
+            return new Properties();
         }
 
         Properties properties = new Properties();
@@ -29,10 +41,14 @@ public class ConfigHelper {
             throw new RuntimeException(e);
         }
 
-        configurableEnvironment.getPropertySources().addLast(new PropertiesPropertySource(namespace + "_" + key, properties));
+        return properties;
     }
 
-    public static void injectToEnvironment(String propertyName, String propertyValue) {
-        GlobalConfig.put(propertyName, propertyValue);
+    public static <T> T bind(String namespace, String key, Class<T> type) {
+        Properties properties = parseToProperties(namespace, key);
+
+        Binder binder = new Binder(new MapConfigurationPropertySource(properties));
+
+        return binder.bindOrCreate("", type);
     }
 }
