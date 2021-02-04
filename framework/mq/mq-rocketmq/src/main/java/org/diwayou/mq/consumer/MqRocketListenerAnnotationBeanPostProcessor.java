@@ -2,8 +2,10 @@ package org.diwayou.mq.consumer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.support.RocketMQMessageConverter;
+import org.diwayou.core.annotation.AnnotationUtil;
 import org.diwayou.mq.annotation.MqListener;
-import org.emall.mq.common.MqListenerUtil;
+import org.diwayou.mq.transaction.MqCheckListener;
+import org.diwayou.mq.transaction.MqCheckListenerRegistry;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -36,7 +38,9 @@ public class MqRocketListenerAnnotationBeanPostProcessor implements BeanPostProc
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        MqListenerUtil.processMqListenerBean(bean, beanName, this::processMqListener);
+        AnnotationUtil.processBean(bean, beanName, MqListener.class, this::processMqListener);
+
+        AnnotationUtil.processBean(bean, beanName, MqCheckListener.class, this::processMqCheckListener);
 
         return bean;
     }
@@ -45,6 +49,12 @@ public class MqRocketListenerAnnotationBeanPostProcessor implements BeanPostProc
         InvocableHandlerMethod handlerMethod = handlerMethodFactory.createInvocableHandlerMethod(bean, method);
 
         listenerRegistry.register(mqListener, handlerMethod);
+    }
+
+    protected void processMqCheckListener(MqCheckListener mqCheckListener, Method method, Object bean, String beanName) {
+        InvocableHandlerMethod handlerMethod = handlerMethodFactory.createInvocableHandlerMethod(bean, method);
+
+        MqCheckListenerRegistry.I().register(mqCheckListener, handlerMethod);
     }
 
     @Override
@@ -57,6 +67,8 @@ public class MqRocketListenerAnnotationBeanPostProcessor implements BeanPostProc
         listenerRegistry.setApplicationContext(applicationContext);
 
         listenerRegistry.registerAll();
+
+        MqCheckListenerRegistry.I().registerAll();
     }
 
     @Override

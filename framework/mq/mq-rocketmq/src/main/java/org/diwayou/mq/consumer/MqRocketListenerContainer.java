@@ -276,6 +276,10 @@ public class MqRocketListenerContainer implements InitializingBean, DisposableBe
         String destination = DestinationUtil.generate(messageExt.getTopic(), messageExt.getTags());
         InvocableHandlerMethod handlerMethod = handlerMethodMap.get(destination);
         if (handlerMethod == null) {
+            handlerMethod = handlerMethodMap.get(topic);
+        }
+
+        if (handlerMethod == null) {
             log.warn("没找到处理方法topic={},tags={},msgId={}", messageExt.getTopic(), messageExt.getTags(), messageExt.getMsgId());
             return;
         }

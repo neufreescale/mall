@@ -1,8 +1,8 @@
 package org.diwayou.mq.consumer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.diwayou.core.annotation.AnnotationUtil;
 import org.diwayou.mq.annotation.MqListener;
-import org.emall.mq.common.MqListenerUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -22,7 +22,7 @@ public class MqKafkaListenerAnnotationBeanPostProcessor<K, V> extends KafkaListe
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-        MqListenerUtil.processMqListenerBean(bean, beanName, this::processMqListener);
+        AnnotationUtil.processBean(bean, beanName, MqListener.class, this::processMqListener);
 
         return super.postProcessAfterInitialization(bean, beanName);
     }

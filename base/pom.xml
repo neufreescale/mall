@@ -44,7 +44,7 @@
 
         <dependency>
             <groupId>org.emall</groupId>
-            <artifactId>mq-kafka</artifactId>
+            <artifactId>mq-rocketmq</artifactId>
         </dependency>
 
         <dependency>

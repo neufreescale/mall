@@ -3,6 +3,7 @@ package org.diwayou.mq;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.diwayou.mq.configuration.MqRocketListenerConfigurationSelector;
 import org.diwayou.mq.producer.RocketMqProducer;
+import org.diwayou.mq.transaction.MqTransactionListener;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,5 +20,10 @@ public class MqRocketAutoConfiguration {
     @Bean
     public RocketMqProducer rocketMqProducer(RocketMQTemplate rocketMQTemplate) {
         return new RocketMqProducer(rocketMQTemplate);
+    }
+
+    @Bean
+    public MqTransactionListener mqTransactionListener() {
+        return new MqTransactionListener();
     }
 }

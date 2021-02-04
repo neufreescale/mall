@@ -1,4 +1,4 @@
-package org.emall.mq.common;
+package org.diwayou.core.reflect;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.support.AopUtils;
@@ -15,7 +15,7 @@ public class MethodUtil {
         Method method = methodArg;
         if (AopUtils.isJdkDynamicProxy(bean)) {
             try {
-                // Found a @MqListener method on the target class for this JDK proxy ->
+                // Found a @Annotation method on the target class for this JDK proxy ->
                 // is it also present on the proxy itself?
                 method = bean.getClass().getMethod(method.getName(), method.getParameterTypes());
                 Class<?>[] proxiedInterfaces = ((Advised) bean).getProxiedInterfaces();
@@ -34,7 +34,7 @@ public class MethodUtil {
             }
             catch (NoSuchMethodException ex) {
                 throw new IllegalStateException(String.format(
-                        "@MqListener method '%s' found on bean target class '%s', " +
+                        "@Annotation method '%s' found on bean target class '%s', " +
                                 "but not found in any interface(s) for bean JDK proxy. Either " +
                                 "pull the method up to an interface or switch to subclass (CGLIB) " +
                                 "proxies by setting proxy-target-class/proxyTargetClass " +
