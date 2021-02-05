@@ -1,0 +1,2 @@
+root=./logs/nfs
+urlPrefix=http://localhost:8081

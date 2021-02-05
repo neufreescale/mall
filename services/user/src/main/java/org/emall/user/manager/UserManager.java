@@ -5,6 +5,8 @@ import org.diwayou.cache.annotation.Cache;
 import org.diwayou.mq.message.MqHeaders;
 import org.diwayou.mq.producer.MqProducer;
 import org.diwayou.mq.producer.SendResult;
+import org.diwayou.storage.Storage;
+import org.diwayou.storage.StorageFactory;
 import org.emall.user.client.dto.UserDto;
 import org.emall.user.model.entity.User;
 import org.emall.user.model.response.UserResponse;
@@ -29,6 +31,9 @@ public class UserManager {
 
     @Cache(key = "user")
     public UserResponse get(Long id) {
+        Storage storage = StorageFactory.get("local");
+
+        log.info(storage.name());
         User user = userService.get(id);
         if (user == null) {
             return null;

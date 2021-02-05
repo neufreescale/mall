@@ -10,9 +10,9 @@ public class ConfigApi {
     private static IConfig iConfig;
 
     static {
-        ServiceRegister.register(IConfig.class);
+        ServiceRegister.registerSingleton(IConfig.class);
 
-        iConfig = ServiceRegister.newAnyInstance(IConfig.class);
+        iConfig = ServiceRegister.getOneSingleton(IConfig.class);
     }
 
     public static String getProperty(String namespace, String key) {

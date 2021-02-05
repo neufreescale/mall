@@ -20,6 +20,7 @@
         <module>mq</module>
         <module>dubbo</module>
         <module>job</module>
+        <module>storage</module>
     </modules>
 
     <properties>

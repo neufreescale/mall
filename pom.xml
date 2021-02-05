@@ -232,6 +232,31 @@
             </dependency>
             <dependency>
                 <groupId>org.emall</groupId>
+                <artifactId>storage-api</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>storage-aliyun</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>storage-local</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>storage-nfs</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>storage-upyun</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
                 <artifactId>job-api</artifactId>
                 <version>${framework.version}</version>
             </dependency>

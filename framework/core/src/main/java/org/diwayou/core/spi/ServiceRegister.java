@@ -15,18 +15,48 @@ public final class ServiceRegister {
 
     private static final Map<Class<?>, Collection<Class<?>>> SERVICES = new ConcurrentHashMap<>();
 
+    private static final Map<Class<?>, Collection<Object>> SINGLETON_SERVICES = new ConcurrentHashMap<>();
+
     public static <T> void register(final Class<T> service) {
         if (SERVICES.containsKey(service)) {
             return;
         }
         for (T each : ServiceLoader.load(service)) {
-            registerServiceClass(service, each);
+            Collection<Class<?>> serviceClasses = SERVICES.computeIfAbsent(service, unused -> new LinkedHashSet<>());
+            serviceClasses.add(each.getClass());
         }
     }
 
-    private static <T> void registerServiceClass(final Class<T> service, final T instance) {
-        Collection<Class<?>> serviceClasses = SERVICES.computeIfAbsent(service, unused -> new LinkedHashSet<>());
-        serviceClasses.add(instance.getClass());
+    public static <T> void registerSingleton(final Class<T> service) {
+        if (SINGLETON_SERVICES.containsKey(service)) {
+            return;
+        }
+        for (T each : ServiceLoader.load(service)) {
+            Collection<Object> services = SINGLETON_SERVICES.computeIfAbsent(service, unused -> new LinkedHashSet<>());
+            services.add(each);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Collection<T> getSingletons(Class<T> service) {
+        return SINGLETON_SERVICES.containsKey(service) ?
+                SINGLETON_SERVICES.get(service).stream()
+                        .map(each -> (T) each)
+                        .collect(Collectors.toList())
+                : Collections.emptyList();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T getOneSingleton(final Class<T> service) {
+        Collection<Object> services = SINGLETON_SERVICES.get(service);
+        if (services == null || services.size() != 1) {
+            throw new RuntimeException("不能唯一找到一个服务提供者");
+        }
+
+        return services.stream()
+                .findAny()
+                .map(c -> (T) c)
+                .orElseThrow(() -> new RuntimeException("can't find a service"));
     }
 
     @SuppressWarnings("unchecked")
@@ -39,8 +69,13 @@ public final class ServiceRegister {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> T newAnyInstance(final Class<T> service) {
-        return SERVICES.get(service).stream()
+    public static <T> T newOneInstance(final Class<T> service) {
+        Collection<Class<?>> serviceClasses = SERVICES.get(service);
+        if (serviceClasses == null || serviceClasses.size() != 1) {
+            throw new RuntimeException("不能唯一找到一个服务提供者");
+        }
+
+        return serviceClasses.stream()
                 .findAny()
                 .map(c -> (T) newServiceInstance(c))
                 .orElseThrow(() -> new RuntimeException("can't find a service"));
