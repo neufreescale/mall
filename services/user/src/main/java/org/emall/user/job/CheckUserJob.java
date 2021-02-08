@@ -8,7 +8,7 @@ import org.diwayou.job.Job;
 /**
  * @author gaopeng 2021/2/4
  */
-@Job(name = "checkUserJob", overwrite = true, cron = "* 0/10 * * * ?")
+@Job(name = "checkUserJob", overwrite = true, cron = "0 0/10 * * * ?")
 @Slf4j
 public class CheckUserJob implements SimpleJob {
 

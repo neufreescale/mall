@@ -45,6 +45,7 @@
         <dubbo.version>2.7.8</dubbo.version>
         <rocketmq.version>2.2.0</rocketmq.version>
         <elasticjob.version>3.0.0-beta</elasticjob.version>
+        <easyexcel.version>2.2.7</easyexcel.version>
 
         <framework.version>1.0-SNAPSHOT</framework.version>
         <mall.version>1.0-SNAPSHOT</mall.version>
@@ -174,6 +175,11 @@
                 <artifactId>elasticjob-lite-core</artifactId>
                 <version>${elasticjob.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easyexcel.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.emall</groupId>
@@ -278,6 +284,11 @@
             <dependency>
                 <groupId>org.emall</groupId>
                 <artifactId>dubbo</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>updown</artifactId>
                 <version>${framework.version}</version>
             </dependency>
 

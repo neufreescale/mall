@@ -21,6 +21,7 @@
         <module>dubbo</module>
         <module>job</module>
         <module>storage</module>
+        <module>updown</module>
     </modules>
 
     <properties>

@@ -39,7 +39,7 @@ public class UserManager {
             return null;
         }
 
-        userService.create(user);
+        //userService.create(user);
 
         Message<UserDto> message = MessageBuilder.withPayload(user.to(UserDto.class))
                 .setHeader(MqHeaders.TOPIC, "test")
