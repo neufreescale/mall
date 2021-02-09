@@ -15,6 +15,15 @@
         <module>order</module>
         <module>item</module>
         <module>user</module>
+        <module>inventory</module>
+        <module>pay</module>
+        <module>store</module>
+        <module>coupon</module>
+        <module>search</module>
+        <module>promotion</module>
+        <module>shopping-cart</module>
+        <module>brand</module>
+        <module>category</module>
     </modules>
 
     <properties>
