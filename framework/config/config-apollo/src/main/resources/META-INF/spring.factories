@@ -1,2 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.diwayou.config.ApolloConfigAutoConfiguration
+org.springframework.context.ApplicationContextInitializer=\
+org.diwayou.config.ApolloConfigApplicationContextInitializer
