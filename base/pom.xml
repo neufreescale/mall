@@ -59,7 +59,7 @@
 
         <dependency>
             <groupId>org.emall</groupId>
-            <artifactId>mq-rocketmq</artifactId>
+            <artifactId>mq-memory</artifactId>
         </dependency>
 
         <dependency>

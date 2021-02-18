@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MqListener {
 
-    String topic() default "";
+    String topic();
 
     String tag() default "";
 

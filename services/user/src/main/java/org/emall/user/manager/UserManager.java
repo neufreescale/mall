@@ -27,7 +27,7 @@ public class UserManager {
     @Autowired
     private MqProducer mqProducer;
 
-    @Cache(key = "user")
+    @Cache(key = "user", ttl = 10)
     public UserResponse get(Long id) {
         User user = userService.get(id);
         if (user == null) {

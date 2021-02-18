@@ -228,6 +228,11 @@
             </dependency>
             <dependency>
                 <groupId>org.emall</groupId>
+                <artifactId>mq-memory</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
                 <artifactId>mq-kafka</artifactId>
                 <version>${framework.version}</version>
             </dependency>
