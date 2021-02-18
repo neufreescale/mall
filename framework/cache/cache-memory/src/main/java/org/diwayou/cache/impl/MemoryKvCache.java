@@ -4,27 +4,41 @@ import com.google.common.collect.Maps;
 import org.diwayou.cache.KvCache;
 
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author gaopeng 2021/1/27
  */
 public class MemoryKvCache implements KvCache {
 
-    private ConcurrentMap<String, String> cache = Maps.newConcurrentMap();
+    private ConcurrentMap<String, CacheData> cache = Maps.newConcurrentMap();
 
     @Override
     public void set(String key, String value) {
-        cache.put(key, value);
+        cache.put(key, CacheData.create(value));
     }
 
     @Override
     public void set(String key, String value, long ttl) {
-        set(key, value);
+        long millis = TimeUnit.SECONDS.toMillis(ttl) + System.currentTimeMillis();
+
+        cache.put(key, CacheData.create(value, millis));
     }
 
     @Override
     public String get(String key) {
-        return cache.get(key);
+        CacheData data = cache.get(key);
+        if (data == null) {
+            return null;
+        }
+
+        if (data.getTtl() < System.currentTimeMillis()) {
+            cache.remove(key, data);
+
+            return null;
+        }
+
+        return data.getValue();
     }
 
     @Override
