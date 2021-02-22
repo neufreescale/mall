@@ -24,6 +24,7 @@
         <module>shopping-cart</module>
         <module>brand</module>
         <module>category</module>
+        <module>area</module>
     </modules>
 
     <properties>

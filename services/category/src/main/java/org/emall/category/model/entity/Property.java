@@ -1,21 +1,16 @@
 package org.emall.category.model.entity;
 
 /**
- * 类目
+ * 属性
  *
- * @author gaopeng 2021/2/9
+ * @author gaopeng 2021/2/22
  */
-public class Category {
+public class Property {
 
     /**
-     * 类目id
+     * 属性id
      */
     private Integer id;
-
-    /**
-     * 父类目id
-     */
-    private Integer parentId;
 
     /**
      * 名称
@@ -23,19 +18,11 @@ public class Category {
     private String name;
 
     /**
-     * 层级
+     * 属性类型
+     *
+     * @see org.emall.category.model.enums.PropertyType
      */
-    private Integer level;
-
-    /**
-     * 是否叶子节点
-     */
-    private Boolean leaf;
-
-    /**
-     * 备注
-     */
-    private String notes;
+    private Integer type;
 
     /**
      * 扩展字段，JSON

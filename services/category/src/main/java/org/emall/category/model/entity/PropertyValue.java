@@ -1,41 +1,31 @@
 package org.emall.category.model.entity;
 
 /**
- * 类目
+ * 属性值
  *
- * @author gaopeng 2021/2/9
+ * @author gaopeng 2021/2/22
  */
-public class Category {
+public class PropertyValue {
 
     /**
-     * 类目id
+     * 属性值id
      */
     private Integer id;
 
     /**
-     * 父类目id
+     * 子属性id
      */
-    private Integer parentId;
+    private Integer childPropertyId;
 
     /**
-     * 名称
+     * 属性id
      */
-    private String name;
+    private Integer propertyId;
 
     /**
-     * 层级
+     * 属性值
      */
-    private Integer level;
-
-    /**
-     * 是否叶子节点
-     */
-    private Boolean leaf;
-
-    /**
-     * 备注
-     */
-    private String notes;
+    private String value;
 
     /**
      * 扩展字段，JSON

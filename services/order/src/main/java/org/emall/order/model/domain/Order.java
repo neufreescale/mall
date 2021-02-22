@@ -11,4 +11,14 @@ import lombok.NoArgsConstructor;
 public class Order {
 
     private Long id;
+
+    /**
+     * 订单编号
+     */
+    private String code;
+
+    /**
+     * 订单状态
+     */
+    private Integer status;
 }
