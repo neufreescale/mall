@@ -1,4 +1,4 @@
-package org.emall.order.model.domain;
+package org.emall.order.model.entity;
 
 import java.math.BigDecimal;
 
@@ -7,10 +7,17 @@ import java.math.BigDecimal;
  */
 public class OrderItem {
 
+    private Long id;
+
+    /**
+     * 订单id
+     */
+    private Long orderId;
+
     /**
      * 商品id
      */
-    private Long id;
+    private Long productId;
 
     /**
      * 商品名称

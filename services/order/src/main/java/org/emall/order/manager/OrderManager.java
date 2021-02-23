@@ -1,11 +1,20 @@
 package org.emall.order.manager;
 
 import lombok.extern.slf4j.Slf4j;
-import org.diwayou.cache.KvCache;
+import org.emall.order.fsm.OrderEvent;
+import org.emall.order.fsm.OrderState;
 import org.emall.order.fsm.OrderStateMachineFactory;
+import org.emall.order.model.command.OrderCommand;
+import org.emall.order.model.command.OrderCreateCommand;
+import org.emall.order.model.domain.Buyer;
+import org.emall.order.model.domain.Product;
+import org.emall.order.model.entity.Order;
 import org.emall.order.thirdparty.user.UserManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @author gaopeng 2021/1/18
@@ -18,18 +27,23 @@ public class OrderManager {
     private OrderStateMachineFactory orderStateMachineFactory;
 
     @Autowired
-    private KvCache kvCache;
-
-    @Autowired
     private UserManager userManager;
 
-    public void create() {
-        kvCache.set("test", "1");
+    public void create(Buyer buyer, List<Product> products) {
+        Order order = new Order();
+        order.setId(1L);
 
-        log.info("cache test={}", kvCache.get("test"));
+        OrderCommand command = new OrderCreateCommand()
+                .setLastState(OrderState.Init)
+                .setEvent(OrderEvent.Create)
+                .setOrder(order);
+        orderStateMachineFactory.execute(command);
 
-        log.info("user={}", userManager.get(1L));
+        log.info("{}", command);
+    }
 
-        orderStateMachineFactory.create();
+    @EventListener(OrderCreateCommand.class)
+    public void onCreate(OrderCreateCommand command) {
+        log.info("order created id={}", command);
     }
 }

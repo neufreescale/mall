@@ -2,17 +2,17 @@ package org.diwayou.fsm.action;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.squirrelframework.foundation.fsm.Action;
-import org.squirrelframework.foundation.fsm.UntypedStateMachine;
+import org.squirrelframework.foundation.fsm.StateMachine;
 
 /**
  * @author gaopeng 2021/1/28
  */
-public class PublishContextAsEventAction implements Action<UntypedStateMachine, Object, Object, Object> {
+public class PublishContextAsEventAction<T extends StateMachine<T, S, E, C>, S, E, C> implements Action<T, S, E, C> {
 
     private ApplicationEventPublisher eventPublisher;
 
-    public static PublishContextAsEventAction create(ApplicationEventPublisher eventPublisher) {
-        return new PublishContextAsEventAction(eventPublisher);
+    public static <T extends StateMachine<T, S, E, C>, S, E, C> PublishContextAsEventAction<T, S, E, C> create(ApplicationEventPublisher eventPublisher) {
+        return new PublishContextAsEventAction<>(eventPublisher);
     }
 
     private PublishContextAsEventAction(ApplicationEventPublisher eventPublisher) {
@@ -20,7 +20,7 @@ public class PublishContextAsEventAction implements Action<UntypedStateMachine, 
     }
 
     @Override
-    public void execute(Object from, Object to, Object event, Object context, UntypedStateMachine stateMachine) {
+    public void execute(S from, S to, E event, C context, T stateMachine) {
         eventPublisher.publishEvent(context);
     }
 

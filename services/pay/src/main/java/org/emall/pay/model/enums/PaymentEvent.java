@@ -1,4 +1,4 @@
-package org.emall.order.fsm;
+package org.emall.pay.model.enums;
 
 /**
  * @author gaopeng 2021/1/20

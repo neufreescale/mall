@@ -2,17 +2,14 @@ package org.emall.order.fsm;
 
 import lombok.extern.slf4j.Slf4j;
 import org.diwayou.fsm.action.PublishContextAsEventAction;
-import org.emall.order.fsm.event.OrderConfirmEvent;
-import org.emall.order.fsm.event.OrderEventEnum;
-import org.emall.order.fsm.state.OrderState;
-import org.emall.order.model.domain.Order;
+import org.emall.order.model.command.OrderCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.support.TransactionOperations;
+import org.springframework.util.Assert;
+import org.squirrelframework.foundation.fsm.StateMachineBuilder;
 import org.squirrelframework.foundation.fsm.StateMachineBuilderFactory;
-import org.squirrelframework.foundation.fsm.UntypedStateMachine;
-import org.squirrelframework.foundation.fsm.UntypedStateMachineBuilder;
 
 import javax.annotation.PostConstruct;
 
@@ -26,32 +23,41 @@ public class OrderStateMachineFactory {
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
-    private UntypedStateMachineBuilder builder;
+    @Autowired
+    private TransactionOperations transactionOperations;
+
+    private StateMachineBuilder<OrderStateMachine, OrderState, OrderEvent, OrderCommand> builder;
 
     @PostConstruct
     public void init() {
-        builder = StateMachineBuilderFactory.create(OrderStateMachine.class);
+        PublishContextAsEventAction<OrderStateMachine, OrderState, OrderEvent, OrderCommand> action = PublishContextAsEventAction.create(eventPublisher);
+
+        builder = StateMachineBuilderFactory.create(OrderStateMachine.class,
+                OrderState.class, OrderEvent.class, OrderCommand.class);
         builder.externalTransition()
                 .from(OrderState.Init)
-                .to(OrderState.Confirmed)
-                .on(OrderEventEnum.Confirm)
-                .perform(PublishContextAsEventAction.create(eventPublisher));
-        builder.onEntry(OrderState.Attention).callMethod("ontoB");
+                .to(OrderState.New)
+                .on(OrderEvent.Create)
+                .perform(action);
+        builder.onEntry(OrderState.Attention).perform(action);
     }
 
-    public void create() {
-        UntypedStateMachine fsm = builder.newStateMachine(OrderState.Init);
+    public void execute(OrderCommand command) {
+        Assert.state(command != null, "command不能为null");
+        Assert.state(command.getLastState() != null, "lastState不能为null");
+        Assert.state(command.getEvent() != null, "event不能为null");
 
-        Order order = new Order();
-        order.setId(1L);
-        OrderConfirmEvent confirmEvent = new OrderConfirmEvent(order);
-        fsm.fire(OrderEventEnum.Confirm, confirmEvent);
+        OrderStateMachine fsm = builder.newStateMachine(command.getLastState());
 
-        log.info("cur state {}", fsm.getCurrentState());
-    }
+        fsm.fire(command.getEvent(), command);
 
-    @EventListener(OrderConfirmEvent.class)
-    public void onCreate(OrderConfirmEvent event) {
-        log.info("order created id={}", event.getOrderId());
+        command.setCurrentState((OrderState) fsm.getCurrentState());
+
+        // 所有延迟执行都在一个数据库事务中
+        if (command.hasDelayExecute()) {
+            transactionOperations.executeWithoutResult((status) -> {
+                command.runDelayExecute();
+            });
+        }
     }
 }
