@@ -298,7 +298,9 @@ public class MqRocketListenerContainer implements InitializingBean, DisposableBe
 
         RPCHook rpcHook = RocketMQUtil.getRPCHookByAkSk(environment, RocketMQMessageListener.ACCESS_KEY_PLACEHOLDER, RocketMQMessageListener.SECRET_KEY_PLACEHOLDER);
         boolean enableMsgTrace = true;
-        String consumerGroup = environment.getProperty(RocketmqConstants.CONSUMER_GROUP);
+
+        // 每个consumer需要不同的订阅组，用topic后缀区分
+        String consumerGroup = environment.getProperty(RocketmqConstants.CONSUMER_GROUP) + "_" + topic;
         if (Objects.nonNull(rpcHook)) {
             consumer = new DefaultMQPushConsumer(consumerGroup, rpcHook, new AllocateMessageQueueAveragely(),
                     enableMsgTrace, this.applicationContext.getEnvironment().
