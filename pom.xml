@@ -32,6 +32,8 @@
         <logback.version>1.2.3</logback.version>
         <aspectj.version>1.9.6</aspectj.version>
         <lombok.version>1.18.16</lombok.version>
+        <jakarta.validation.version>2.0.2</jakarta.validation.version>
+        <swagger.version>3.0.0</swagger.version>
         <guava.version>30.1-jre</guava.version>
         <commons-lang3.version>3.11</commons-lang3.version>
         <commons-pool2.version>2.9.0</commons-pool2.version>
@@ -88,6 +90,16 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta.validation.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-boot-starter</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
@@ -299,12 +311,122 @@
 
             <dependency>
                 <groupId>org.emall</groupId>
-                <artifactId>order</artifactId>
+                <artifactId>area</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>area-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>brand</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>brand-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>category</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>category-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>coupon</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>coupon-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>inventory</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>inventory-client</artifactId>
                 <version>${mall.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.emall</groupId>
                 <artifactId>item</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>item-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>order</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>order-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>pay</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>pay-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>promotion</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>promotion-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>search</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>search-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>shopping-cart</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>shopping-cart-client</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>store</artifactId>
+                <version>${mall.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>store-client</artifactId>
                 <version>${mall.version}</version>
             </dependency>
             <dependency>

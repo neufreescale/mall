@@ -47,4 +47,9 @@ public class MemoryKvCache implements KvCache {
 
         return Boolean.TRUE;
     }
+
+    @Override
+    public Boolean setIfAbsent(String key, String value, int timeout, TimeUnit timeUnit) {
+        return Boolean.TRUE;
+    }
 }

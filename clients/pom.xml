@@ -13,6 +13,18 @@
     <packaging>pom</packaging>
     <modules>
         <module>user-client</module>
+        <module>area-client</module>
+        <module>brand-client</module>
+        <module>category-client</module>
+        <module>coupon-client</module>
+        <module>inventory-client</module>
+        <module>item-client</module>
+        <module>order-client</module>
+        <module>pay-client</module>
+        <module>promotion-client</module>
+        <module>search-client</module>
+        <module>shopping-cart-client</module>
+        <module>store-client</module>
     </modules>
 
     <properties>

@@ -12,9 +12,9 @@ import lombok.Getter;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum ItemType {
 
-    real(1, "实体商品"),
-    virtual(2, "虚拟商品"),
-    service(3, "服务商品"),
+    Real(1, "实体商品"),
+    Virtual(2, "虚拟商品"),
+    Service(3, "服务商品"),
     ;
 
     private final int id;

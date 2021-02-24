@@ -1,6 +1,7 @@
 package org.diwayou.cache;
 
 import org.diwayou.cache.annotation.CacheAnnotationInterceptor;
+import org.diwayou.cache.manager.LockManager;
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Bean;
@@ -30,5 +31,11 @@ public class CacheApiAutoConfiguration {
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
     public CacheAnnotationInterceptor cacheAnnotationInterceptor(KvCache kvCache) {
         return new CacheAnnotationInterceptor(kvCache);
+    }
+
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public LockManager lockManager(KvCache kvCache) {
+        return new LockManager(kvCache);
     }
 }

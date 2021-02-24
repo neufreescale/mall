@@ -33,4 +33,9 @@ public class RedisKvCache implements KvCache {
     public Boolean delete(String key) {
         return stringRedisTemplate.delete(key);
     }
+
+    @Override
+    public Boolean setIfAbsent(String key, String value, int timeout, TimeUnit unit) {
+        return stringRedisTemplate.opsForValue().setIfAbsent(key, value, timeout, unit);
+    }
 }
