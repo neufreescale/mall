@@ -13,7 +13,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 /**
  * @author gaopeng 2021/1/15
  */
-@ControllerAdvice
+// 由于Swagger原因，这个地方必须限制包范围，要不然会影响到Swagger
+@ControllerAdvice(value = {"org.emall"})
 public class ResponseBodyWrapper implements ResponseBodyAdvice<Object> {
 
     @Override

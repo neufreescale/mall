@@ -11,6 +11,7 @@ import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.unit.DataSize;
 
 import javax.servlet.MultipartConfigElement;
@@ -19,6 +20,7 @@ import javax.servlet.MultipartConfigElement;
  * @author gaopeng 2021/1/15
  */
 @Configuration
+@Import({SwaggerConfiguration.class})
 @AutoConfigureBefore(ErrorMvcAutoConfiguration.class)
 public class MvcConfiguration {
 
