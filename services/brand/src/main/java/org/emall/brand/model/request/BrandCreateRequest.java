@@ -1,5 +1,6 @@
 package org.emall.brand.model.request;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.diwayou.core.bean.Convertible;
@@ -23,6 +24,7 @@ public class BrandCreateRequest implements Convertible {
     private String logo;
 
     @Size(message = "商标注册证编号长度范围1~50", min = 1, max = 50)
+    @ApiModelProperty(value = "商标注册证编号")
     private String certificateCode;
 
     @Size(message = "品牌介绍长度范围1~300", min = 1, max = 300)
