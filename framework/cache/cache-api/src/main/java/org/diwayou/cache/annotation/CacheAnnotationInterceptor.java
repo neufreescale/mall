@@ -41,12 +41,12 @@ public class CacheAnnotationInterceptor implements MethodInterceptor, BeanFactor
 
         String value = kvCache.get(key);
         if (value != null) {
-            return Json.I().fromJson(value, TypeFactory.defaultInstance().constructType(method.getGenericReturnType()));
+            return Json.fromJson(value, TypeFactory.defaultInstance().constructType(method.getGenericReturnType()));
         }
 
         Object result = invocation.proceed();
 
-        kvCache.set(key, Json.I().toJson(result), cache.ttl());
+        kvCache.set(key, Json.toJson(result), cache.ttl());
 
         return result;
     }

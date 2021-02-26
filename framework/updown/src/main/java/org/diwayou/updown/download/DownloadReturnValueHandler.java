@@ -54,7 +54,7 @@ public class DownloadReturnValueHandler implements HandlerMethodReturnValueHandl
         if (returnValue == null) {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            StreamUtils.copy(Json.I().toJson(ResultWrapper.success()), StandardCharsets.UTF_8, response.getOutputStream());
+            StreamUtils.copy(Json.toJson(ResultWrapper.success()), StandardCharsets.UTF_8, response.getOutputStream());
 
             return;
         }
