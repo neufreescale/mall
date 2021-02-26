@@ -20,8 +20,8 @@ public class RedisKvCache implements KvCache {
     }
 
     @Override
-    public void set(String key, String value, long ttl) {
-        stringRedisTemplate.opsForValue().set(key, value, ttl, TimeUnit.SECONDS);
+    public void set(String key, String value, long ttl, TimeUnit unit) {
+        stringRedisTemplate.opsForValue().set(key, value, ttl, unit);
     }
 
     @Override
@@ -35,7 +35,7 @@ public class RedisKvCache implements KvCache {
     }
 
     @Override
-    public Boolean setIfAbsent(String key, String value, int timeout, TimeUnit unit) {
+    public Boolean setIfAbsent(String key, String value, long timeout, TimeUnit unit) {
         return stringRedisTemplate.opsForValue().setIfAbsent(key, value, timeout, unit);
     }
 }

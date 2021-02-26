@@ -18,8 +18,12 @@ public class LockManager {
         this.kvCache = kvCache;
     }
 
-    public <R> R runWithLock(String key, int seconds, Supplier<R> callback) {
-        Boolean lockResult = kvCache.setIfAbsent(key, "", seconds, TimeUnit.SECONDS);
+    public <R> R executeWithLock(String key, long seconds, Supplier<R> callback) {
+        return executeWithLock(key, seconds, TimeUnit.SECONDS, callback);
+    }
+
+    public <R> R executeWithLock(String key, long timeout, TimeUnit unit, Supplier<R> callback) {
+        Boolean lockResult = kvCache.setIfAbsent(key, "", timeout, unit);
         if (!BooleanUtils.isTrue(lockResult)) {
             throw new CustomException("操作冲突，请稍后重试!");
         }
@@ -31,8 +35,12 @@ public class LockManager {
         }
     }
 
-    public <T> void runWithLock(String key, int seconds, Runnable callback) {
-        runWithLock(key, seconds, () -> {
+    public <T> void runWithLock(String key, long seconds, Runnable callback) {
+        runWithLock(key, seconds, TimeUnit.SECONDS, callback);
+    }
+
+    public <T> void runWithLock(String key, long timeout, TimeUnit unit, Runnable callback) {
+        executeWithLock(key, timeout, unit, () -> {
             callback.run();
             return null;
         });

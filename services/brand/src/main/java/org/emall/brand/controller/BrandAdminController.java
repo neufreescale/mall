@@ -22,11 +22,11 @@ public class BrandAdminController {
 
     @PostMapping(path = "/create", name = "创建品牌")
     public Integer create(@Validated @RequestBody BrandCreateRequest request) {
-        return brandManager.createWithLock(request);
+        return brandManager.create(request);
     }
 
     @PostMapping(path = "/update", name = "更新品牌")
     public void update(@Validated @RequestBody BrandUpdateRequest request) {
-        brandManager.updateWithLock(request);
+        brandManager.update(request);
     }
 }

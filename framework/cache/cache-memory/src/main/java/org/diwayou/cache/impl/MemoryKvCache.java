@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class MemoryKvCache implements KvCache {
 
-    private ConcurrentMap<String, CacheData> cache = Maps.newConcurrentMap();
+    private final ConcurrentMap<String, CacheData> cache = Maps.newConcurrentMap();
 
     @Override
     public void set(String key, String value) {
@@ -19,10 +19,8 @@ public class MemoryKvCache implements KvCache {
     }
 
     @Override
-    public void set(String key, String value, long ttl) {
-        long millis = TimeUnit.SECONDS.toMillis(ttl) + System.currentTimeMillis();
-
-        cache.put(key, CacheData.create(value, millis));
+    public void set(String key, String value, long ttl, TimeUnit unit) {
+        cache.put(key, CacheData.create(value, toRealTtl(ttl, unit)));
     }
 
     @Override
@@ -49,7 +47,25 @@ public class MemoryKvCache implements KvCache {
     }
 
     @Override
-    public Boolean setIfAbsent(String key, String value, int timeout, TimeUnit timeUnit) {
+    public Boolean setIfAbsent(String key, String value, long timeout, TimeUnit unit) {
+        CacheData data = CacheData.create(value, toRealTtl(timeout, unit));
+        CacheData old = cache.putIfAbsent(key, data);
+        if (old != null) {
+            // 检验是否过期
+            if (get(key) == null) {
+                // 过期重新put
+                old = cache.putIfAbsent(key, data);
+                // 如果并发，忽略直接返回false
+                if (old != null) {
+                    return Boolean.FALSE;
+                }
+            }
+        }
+
         return Boolean.TRUE;
+    }
+
+    private static long toRealTtl(long ttl, TimeUnit unit) {
+        return unit.toMillis(ttl) + System.currentTimeMillis();
     }
 }

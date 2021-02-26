@@ -7,11 +7,11 @@ import java.lang.annotation.Target;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @author gaopeng 2021/2/1
+ * @author gaopeng 2021/2/26
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface Cache {
+public @interface CacheLock {
 
     /**
      * 手动设置key前缀
