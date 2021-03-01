@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.emall</groupId>
+            <artifactId>security</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

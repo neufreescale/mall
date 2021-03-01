@@ -22,6 +22,7 @@
         <module>job</module>
         <module>storage</module>
         <module>updown</module>
+        <module>security</module>
     </modules>
 
     <properties>

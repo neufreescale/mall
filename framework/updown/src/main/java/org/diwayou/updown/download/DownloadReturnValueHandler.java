@@ -7,8 +7,8 @@ import com.alibaba.excel.write.metadata.WriteSheet;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.diwayou.core.json.Json;
 import org.diwayou.core.result.ResultWrapper;
+import org.diwayou.core.util.WebResponseUtil;
 import org.diwayou.updown.annotation.ResponseFile;
 import org.springframework.core.MethodParameter;
 import org.springframework.core.ResolvableType;
@@ -17,7 +17,6 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.Assert;
-import org.springframework.util.StreamUtils;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodReturnValueHandler;
 import org.springframework.web.method.support.ModelAndViewContainer;
@@ -52,9 +51,7 @@ public class DownloadReturnValueHandler implements HandlerMethodReturnValueHandl
         Assert.state(response != null, "No HttpServletResponse");
 
         if (returnValue == null) {
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
-            StreamUtils.copy(Json.toJson(ResultWrapper.success()), StandardCharsets.UTF_8, response.getOutputStream());
+            WebResponseUtil.writeJson(response, ResultWrapper.success());
 
             return;
         }

@@ -15,6 +15,7 @@ public enum ResultCode {
     Ok(0, "成功"),
     Error(-1, "失败"),
     ParameterError(-2, "参数有误"),
+    NoLogin(1, "未登录"),
     ;
 
     private int code;
