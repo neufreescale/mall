@@ -65,6 +65,15 @@ public class Json {
         }
     }
 
+    public static byte[] toBytes(Object object) {
+        try {
+            return mapper.writeValueAsBytes(object);
+        } catch (JsonProcessingException e) {
+            log.error("Json转换出错", e);
+            throw new RuntimeException(e);
+        }
+    }
+
     public static <T> T fromJson(String jsonString, JavaType javaType) {
         if (StringUtils.isEmpty(jsonString)) {
             return null;

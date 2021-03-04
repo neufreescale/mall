@@ -6,10 +6,10 @@ import org.emall.order.fsm.OrderState;
 import org.emall.order.fsm.OrderStateMachineFactory;
 import org.emall.order.model.command.OrderCommand;
 import org.emall.order.model.command.OrderCreateCommand;
-import org.emall.order.model.domain.Buyer;
 import org.emall.order.model.domain.Product;
 import org.emall.order.model.entity.Order;
 import org.emall.order.thirdparty.user.UserManager;
+import org.emall.user.client.dto.Buyer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -38,12 +38,15 @@ public class OrderManager {
                 .setEvent(OrderEvent.Create)
                 .setOrder(order);
         orderStateMachineFactory.execute(command);
-
-        log.info("{}", command);
     }
 
     @EventListener(OrderCreateCommand.class)
     public void onCreate(OrderCreateCommand command) {
         log.info("order created id={}", command);
+    }
+
+    @EventListener(OrderCreateCommand.class)
+    public void createOrder(OrderCreateCommand command) {
+        log.info("{}", command);
     }
 }

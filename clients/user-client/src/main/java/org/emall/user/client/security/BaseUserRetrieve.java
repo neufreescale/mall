@@ -2,7 +2,7 @@ package org.emall.user.client.security;
 
 import org.diwayou.security.api.UserRetriever;
 import org.diwayou.security.core.AuthenticationInfo;
-import org.springframework.security.core.userdetails.User;
+import org.emall.user.client.dto.Buyer;
 import org.springframework.security.core.userdetails.UserDetails;
 
 /**
@@ -18,10 +18,9 @@ public class BaseUserRetrieve implements UserRetriever {
     @Override
     public UserDetails retrieve(AuthenticationInfo info) {
         if ("test".equals(info.getToken())) {
-            return User.withUsername("diwayou")
-                    .password("123")
-                    .roles("user")
-                    .build();
+            return new Buyer()
+                    .setId(1L)
+                    .setName("diwayou");
         }
 
         return null;
