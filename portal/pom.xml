@@ -49,7 +49,17 @@
 
         <dependency>
             <groupId>org.emall</groupId>
+            <artifactId>mq-memory</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.emall</groupId>
             <artifactId>order</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.emall</groupId>
+            <artifactId>pay</artifactId>
         </dependency>
 
         <dependency>

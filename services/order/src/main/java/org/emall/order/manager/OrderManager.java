@@ -6,15 +6,14 @@ import org.emall.order.fsm.OrderState;
 import org.emall.order.fsm.OrderStateMachineFactory;
 import org.emall.order.model.command.OrderCommand;
 import org.emall.order.model.command.OrderCreateCommand;
-import org.emall.order.model.domain.Product;
+import org.emall.order.model.command.OrderPaidCommand;
 import org.emall.order.model.entity.Order;
+import org.emall.order.model.response.OrderCreateResponse;
 import org.emall.order.thirdparty.user.UserManager;
+import org.emall.pay.mq.PaidMessage;
 import org.emall.user.client.dto.Buyer;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @author gaopeng 2021/1/18
@@ -29,7 +28,7 @@ public class OrderManager {
     @Autowired
     private UserManager userManager;
 
-    public void create(Buyer buyer, List<Product> products) {
+    public OrderCreateResponse create(Buyer buyer) {
         Order order = new Order();
         order.setId(1L);
 
@@ -38,15 +37,18 @@ public class OrderManager {
                 .setEvent(OrderEvent.Create)
                 .setOrder(order);
         orderStateMachineFactory.execute(command);
+
+        return new OrderCreateResponse();
     }
 
-    @EventListener(OrderCreateCommand.class)
-    public void onCreate(OrderCreateCommand command) {
-        log.info("order created id={}", command);
-    }
+    public void paid(PaidMessage message) {
+        Order order = new Order();
+        order.setId(1L);
 
-    @EventListener(OrderCreateCommand.class)
-    public void createOrder(OrderCreateCommand command) {
-        log.info("{}", command);
+        OrderCommand command = new OrderPaidCommand()
+                .setLastState(OrderState.New)
+                .setEvent(OrderEvent.PAY)
+                .setOrder(order);
+        orderStateMachineFactory.execute(command);
     }
 }

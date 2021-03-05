@@ -9,6 +9,11 @@ public enum OrderEvent {
      */
     Create,
 
+    /**
+     * 支付
+     */
+    PAY,
+
     Confirm,
     Processing,
     Completed,

@@ -39,7 +39,11 @@ public class OrderStateMachineFactory {
                 .to(OrderState.New)
                 .on(OrderEvent.Create)
                 .perform(action);
-        builder.onEntry(OrderState.Attention).perform(action);
+        builder.externalTransition()
+                .from(OrderState.New)
+                .to(OrderState.Paid)
+                .on(OrderEvent.PAY)
+                .perform(action);
     }
 
     public void execute(OrderCommand command) {

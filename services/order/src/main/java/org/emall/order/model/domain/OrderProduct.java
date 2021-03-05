@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @Accessors(chain = true)
-public class Product {
+public class OrderProduct {
 
     /**
      * 商品id
