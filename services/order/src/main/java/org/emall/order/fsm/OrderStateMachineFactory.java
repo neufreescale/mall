@@ -2,6 +2,7 @@ package org.emall.order.fsm;
 
 import lombok.extern.slf4j.Slf4j;
 import org.diwayou.fsm.action.PublishContextAsEventAction;
+import org.diwayou.fsm.util.ExportUtil;
 import org.emall.order.model.command.OrderCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -28,22 +29,25 @@ public class OrderStateMachineFactory {
 
     private StateMachineBuilder<OrderStateMachine, OrderState, OrderEvent, OrderCommand> builder;
 
+    private PublishContextAsEventAction<OrderStateMachine, OrderState, OrderEvent, OrderCommand> action;
+
     @PostConstruct
     public void init() {
-        PublishContextAsEventAction<OrderStateMachine, OrderState, OrderEvent, OrderCommand> action = PublishContextAsEventAction.create(eventPublisher);
+        action = PublishContextAsEventAction.create(eventPublisher);
 
         builder = StateMachineBuilderFactory.create(OrderStateMachine.class,
                 OrderState.class, OrderEvent.class, OrderCommand.class);
-        builder.externalTransition()
-                .from(OrderState.Init)
-                .to(OrderState.New)
-                .on(OrderEvent.Create)
-                .perform(action);
-        builder.externalTransition()
-                .from(OrderState.New)
-                .to(OrderState.Paid)
-                .on(OrderEvent.PAY)
-                .perform(action);
+
+        createTransition(OrderState.Init, OrderState.New, OrderEvent.Create);
+        createTransition(OrderState.New, OrderState.Paid, OrderEvent.Pay);
+        createTransition(OrderState.Paid, OrderState.Confirmed, OrderEvent.Confirm);
+        createTransition(OrderState.Confirmed, OrderState.Processing, OrderEvent.Process);
+        createTransition(OrderState.Processing, OrderState.Completed, OrderEvent.Complete);
+        createTransition(OrderState.Paid, OrderState.Cancelled, OrderEvent.Cancel);
+    }
+
+    private void createTransition(OrderState from, OrderState to, OrderEvent event) {
+        builder.externalTransition().from(from).to(to).on(event).perform(action);
     }
 
     public void execute(OrderCommand command) {
@@ -63,5 +67,11 @@ public class OrderStateMachineFactory {
                 command.runDelayExecute();
             });
         }
+    }
+
+    public void export(String filename) {
+        OrderStateMachine fsm = builder.newStateMachine(OrderState.Init);
+
+        ExportUtil.toSvg(fsm, filename);
     }
 }

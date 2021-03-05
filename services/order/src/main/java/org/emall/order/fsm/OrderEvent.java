@@ -12,12 +12,27 @@ public enum OrderEvent {
     /**
      * 支付
      */
-    PAY,
+    Pay,
 
+    /**
+     * 审核通过
+     */
     Confirm,
-    Processing,
-    Completed,
+
+    /**
+     * 发货或者其它操作
+     */
+    Process,
+
+    /**
+     * 完成
+     */
+    Complete,
     Attention,
     Returned,
-    Cancelled
+
+    /**
+     * 取消
+     */
+    Cancel
 }

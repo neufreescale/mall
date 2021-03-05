@@ -47,8 +47,12 @@ public class OrderManager {
 
         OrderCommand command = new OrderPaidCommand()
                 .setLastState(OrderState.New)
-                .setEvent(OrderEvent.PAY)
+                .setEvent(OrderEvent.Pay)
                 .setOrder(order);
         orderStateMachineFactory.execute(command);
+    }
+
+    public void export() {
+        orderStateMachineFactory.export("order");
     }
 }

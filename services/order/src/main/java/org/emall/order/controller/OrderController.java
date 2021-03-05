@@ -23,4 +23,9 @@ public class OrderController {
     public OrderCreateResponse create(@AuthenticationPrincipal final Buyer buyer) {
         return orderManager.create(buyer);
     }
+
+    @GetMapping("/export")
+    public void export() {
+        orderManager.export();
+    }
 }

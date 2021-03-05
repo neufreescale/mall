@@ -2,7 +2,7 @@ package org.diwayou.fsm.util;
 
 import org.squirrelframework.foundation.component.SquirrelProvider;
 import org.squirrelframework.foundation.fsm.DotVisitor;
-import org.squirrelframework.foundation.fsm.UntypedStateMachine;
+import org.squirrelframework.foundation.fsm.StateMachine;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -13,7 +13,7 @@ import java.nio.file.Paths;
  */
 public class ExportUtil {
 
-    public static void toSvg(UntypedStateMachine stateMachine, String filename) {
+    public static void toSvg(StateMachine<?,?,?,?> stateMachine, String filename) {
         DotVisitor visitor = SquirrelProvider.getInstance().newInstance(DotVisitor.class);
         stateMachine.accept(visitor);
         visitor.convertDotFile(filename);
