@@ -59,7 +59,7 @@ public class OrderStateMachineFactory {
 
         fsm.fire(command.getEvent(), command);
 
-        command.setCurrentState((OrderState) fsm.getCurrentState());
+        command.setCurrentState(fsm.getCurrentState());
 
         // 所有延迟执行都在一个数据库事务中
         if (command.hasDelayExecute()) {

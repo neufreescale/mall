@@ -1,6 +1,7 @@
 package org.emall.order.controller;
 
 import org.emall.order.manager.OrderManager;
+import org.emall.order.model.request.OrderCreateRequest;
 import org.emall.order.model.response.OrderCreateResponse;
 import org.emall.user.client.dto.Buyer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ public class OrderController {
 
     @GetMapping("/create")
     public OrderCreateResponse create(@AuthenticationPrincipal final Buyer buyer) {
-        return orderManager.create(buyer);
+        OrderCreateRequest request = new OrderCreateRequest();
+        request.setPhone("12366666666");
+        return orderManager.create(buyer, request);
     }
 
     @GetMapping("/export")
