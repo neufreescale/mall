@@ -2,9 +2,12 @@ package org.diwayou.config.impl;
 
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.ConfigService;
+import com.ctrip.framework.apollo.core.enums.EnvUtils;
 import com.ctrip.framework.apollo.model.ConfigChange;
+import com.ctrip.framework.foundation.Foundation;
 import org.diwayou.config.ConfigEvent;
 import org.diwayou.config.ConfigListener;
+import org.diwayou.config.Env;
 import org.diwayou.config.IConfig;
 
 import java.util.Collections;
@@ -32,5 +35,21 @@ public class ApolloConfig implements IConfig {
                 listener.onChange(event);
             }
         }, Collections.singleton(key));
+    }
+
+    @Override
+    public Env env() {
+        switch (EnvUtils.transformEnv(Foundation.server().getEnvType())) {
+            case DEV:
+                return Env.Dev;
+            case FAT:
+                return Env.Test;
+            case UAT:
+                return Env.Pre;
+            case PRO:
+                return Env.Online;
+            default:
+                throw new IllegalStateException("环境配置有问题");
+        }
     }
 }

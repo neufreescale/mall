@@ -3,7 +3,7 @@ package org.diwayou.config;
 /**
  * @author gaopeng 2021/1/19
  */
-public interface IConfig {
+public interface IConfig extends Environment {
 
     String APP_NAME_KEY = "appName";
 

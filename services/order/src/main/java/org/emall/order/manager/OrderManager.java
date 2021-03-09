@@ -1,6 +1,7 @@
 package org.emall.order.manager;
 
 import lombok.extern.slf4j.Slf4j;
+import org.diwayou.config.ConfigApi;
 import org.emall.order.fsm.OrderEvent;
 import org.emall.order.fsm.OrderState;
 import org.emall.order.fsm.OrderStateMachineFactory;
@@ -36,6 +37,7 @@ public class OrderManager {
     public OrderCreateResponse create(Buyer buyer, @Valid OrderCreateRequest request) {
         Order order = new Order();
         order.setId(1L);
+        log.info("{}", ConfigApi.env().env());
 
         OrderCommand command = new OrderCreateCommand()
                 .setLastState(OrderState.Init)

@@ -1,7 +1,9 @@
 package org.diwayou.config.impl;
 
 import com.google.common.io.Files;
+import org.apache.commons.lang3.StringUtils;
 import org.diwayou.config.ConfigListener;
+import org.diwayou.config.Env;
 import org.diwayou.config.IConfig;
 
 import java.io.File;
@@ -30,6 +32,16 @@ public class LocalFileConfig implements IConfig {
     @Override
     public void addListener(String namespace, String key, ConfigListener listener) {
         // todo
+    }
+
+    @Override
+    public Env env() {
+        String env = getProperty(Constants.NS_COMMON, Constants.KEY_ENV);
+        if (StringUtils.isBlank(env)) {
+            return Env.Dev;
+        }
+
+        return Env.valueOf(env);
     }
 
     private static String buildFilePath(String namespace, String key) {

@@ -22,4 +22,8 @@ public class ConfigApi {
     public static void addListener(String namespace, String key, ConfigListener listener) {
         iConfig.addListener(namespace, key, listener);
     }
+
+    public static Environment env() {
+        return iConfig;
+    }
 }
