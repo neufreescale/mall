@@ -3,6 +3,7 @@ package org.diwayou.core.aop;
 import org.diwayou.core.annotation.IgnoreWrapper;
 import org.diwayou.core.result.ResultWrapper;
 import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.AnnotatedElementUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
@@ -19,7 +20,8 @@ public class ResponseBodyWrapper implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return returnType.getMethodAnnotation(IgnoreWrapper.class) == null;
+        return (!AnnotatedElementUtils.hasAnnotation(returnType.getContainingClass(), IgnoreWrapper.class) &&
+                !returnType.hasMethodAnnotation(IgnoreWrapper.class));
     }
 
     @Override

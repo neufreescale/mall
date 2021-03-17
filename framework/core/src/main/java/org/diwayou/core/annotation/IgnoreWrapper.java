@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author gaopeng 2021/1/15
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IgnoreWrapper {
 }

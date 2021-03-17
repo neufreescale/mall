@@ -23,6 +23,7 @@
         <module>storage</module>
         <module>updown</module>
         <module>security</module>
+        <module>http</module>
     </modules>
 
     <properties>

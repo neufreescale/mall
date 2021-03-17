@@ -20,6 +20,11 @@ public class ConfigHelper {
     public static void injectToEnvironment(String namespace, String key, ConfigurableEnvironment configurableEnvironment) {
         Properties properties = parseToProperties(namespace, key);
 
+        if (properties.isEmpty()) {
+            log.warn("配置为空 namespace={},key={}", namespace, key);
+            return;
+        }
+
         configurableEnvironment.getPropertySources().addLast(new PropertiesPropertySource(namespace + "_" + key, properties));
     }
 
