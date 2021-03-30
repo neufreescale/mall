@@ -23,6 +23,6 @@ public class BaseUserRetrieve implements UserRetriever {
                     .setName("diwayou");
         }
 
-        return null;
+        return new Buyer();
     }
 }

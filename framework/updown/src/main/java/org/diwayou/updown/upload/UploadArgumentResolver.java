@@ -18,6 +18,8 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -63,7 +65,17 @@ public class UploadArgumentResolver implements HandlerMethodArgumentResolver {
             return null;
         }
 
-        return readData(file, requestFile.dataClass());
+        Class<?> dataClass = requestFile.dataClass();
+        if (dataClass.equals(Object.class)) {
+            Type dataType = parameter.getGenericParameterType();
+            if (!(dataType instanceof ParameterizedType)) {
+                throw new IllegalArgumentException("@RequestFile注解标注的类型不正确");
+            }
+
+            dataClass = (Class<?>) ((ParameterizedType) dataType).getActualTypeArguments()[0];
+        }
+
+        return readData(file, dataClass);
     }
 
     private List<?> readData(MultipartFile file, Class<?> dataClass) {

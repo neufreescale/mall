@@ -8,10 +8,7 @@ import org.emall.user.manager.UserManager;
 import org.emall.user.model.response.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -55,7 +52,8 @@ public class UserDownloadController {
 
     @PostMapping("/upload")
     @ResponseBody
-    public Collection<UserResponse> upload(@RequestFile(dataClass = UserResponse.class) List<UserResponse> users) {
+    public Collection<UserResponse> upload(@RequestFile List<UserResponse> users,
+                                           @RequestParam(value = "name", required = false) String name) {
         for (UserResponse user : users) {
             log.info("{}", user);
         }

@@ -29,11 +29,6 @@
 
         <dependency>
             <groupId>org.emall</groupId>
-            <artifactId>security</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.emall</groupId>
             <artifactId>dubbo</artifactId>
         </dependency>
 

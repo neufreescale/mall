@@ -12,7 +12,7 @@ public @interface RequestFile {
 
     String name() default "";
 
-    Class<?> dataClass();
+    Class<?> dataClass() default Object.class;
 
     boolean required() default true;
 }
