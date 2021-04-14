@@ -2,9 +2,8 @@ package org.emall.order.model.request;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import org.emall.order.validation.Insert;
+import org.emall.order.validation.Phone;
 
 /**
  * @author gaopeng 2021/3/8
@@ -13,7 +12,6 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 public class OrderCreateRequest {
 
-    @NotNull(message = "电话不能为空")
-    @Pattern(message = "无效手机号，请重新输入", regexp = "[\\d]{11}")
+    @Phone(groups = Insert.class)
     private String phone;
 }

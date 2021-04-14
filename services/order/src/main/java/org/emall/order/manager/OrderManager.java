@@ -12,6 +12,8 @@ import org.emall.order.model.entity.Order;
 import org.emall.order.model.request.OrderCreateRequest;
 import org.emall.order.model.response.OrderCreateResponse;
 import org.emall.order.thirdparty.user.UserManager;
+import org.emall.order.validation.Insert;
+import org.emall.order.validation.Update;
 import org.emall.pay.mq.PaidMessage;
 import org.emall.user.client.dto.Buyer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,7 @@ import javax.validation.Valid;
  */
 @Component
 @Slf4j
-@Validated
+@Validated(Insert.class)
 public class OrderManager {
 
     @Autowired
@@ -34,6 +36,7 @@ public class OrderManager {
     @Autowired
     private UserManager userManager;
 
+    @Validated(Update.class)
     public OrderCreateResponse create(Buyer buyer, @Valid OrderCreateRequest request) {
         Order order = new Order();
         order.setId(1L);
