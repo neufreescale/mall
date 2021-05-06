@@ -12,4 +12,4 @@ CREATE TABLE `score` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
-select sl.name,left(sc.name,20),sc.`min`,sc.`rank`,sc.year from score sc inner join school sl on sc.schoolid where year = 2019 order by `rank` asc limit 100;
+select sl.name,left(sc.name,20),sc.`min`,sc.`rank`,sc.year from score sc inner join school sl on sc.school_id=sl.id where year = 2020 order by `rank` asc limit 100;

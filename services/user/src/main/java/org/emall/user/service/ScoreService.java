@@ -2,9 +2,11 @@ package org.emall.user.service;
 
 import org.emall.user.dao.ScoreDao;
 import org.emall.user.model.entity.Score;
+import org.emall.user.model.response.ScoreResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,5 +34,9 @@ public class ScoreService {
 
     public void deleteSchool(Integer id) {
         scoreDao.deleteSchool(id);
+    }
+
+    public Collection<ScoreResponse> rank(Integer year) {
+        return scoreDao.rank(year);
     }
 }

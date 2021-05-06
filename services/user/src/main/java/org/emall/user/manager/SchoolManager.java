@@ -8,11 +8,14 @@ import org.emall.user.model.domain.SchoolInfo;
 import org.emall.user.model.domain.SyncStatus;
 import org.emall.user.model.entity.School;
 import org.emall.user.model.entity.Score;
+import org.emall.user.model.response.ScoreResponse;
 import org.emall.user.service.SchoolService;
+import org.emall.user.service.ScoreService;
 import org.emall.user.service.ScoreSyncService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -30,6 +33,9 @@ public class SchoolManager {
 
     @Autowired
     private ScoreSyncManager scoreSyncManager;
+
+    @Autowired
+    private ScoreService scoreService;
 
     public void upload(List<SchoolInfo> schoolInfos) {
         for (SchoolInfo schoolInfo : schoolInfos) {
@@ -95,5 +101,9 @@ public class SchoolManager {
                 scoreSyncService.save(allScore, school);
             }
         }
+    }
+
+    public Collection<ScoreResponse> download(Integer year) {
+        return scoreService.rank(year);
     }
 }
