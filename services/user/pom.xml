@@ -54,6 +54,11 @@
 
         <dependency>
             <groupId>org.emall</groupId>
+            <artifactId>http</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.emall</groupId>
             <artifactId>mq-api</artifactId>
         </dependency>
 
