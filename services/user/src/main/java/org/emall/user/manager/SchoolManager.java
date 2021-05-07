@@ -1,6 +1,5 @@
 package org.emall.user.manager;
 
-import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.diwayou.core.exception.CustomException;
@@ -79,26 +78,16 @@ public class SchoolManager {
         scoreSyncService.save(scores, school, year);
     }
 
-    public void syncAll() {
+    public void syncAll(Integer year) {
         List<School> schools = schoolService.allNoSync();
 
         for (School school : schools) {
-            List<Score> allScore = Lists.newArrayList();
-            for (int year = 2020; year > 2017; year--) {
-                List<Score> scores = scoreSyncManager.sync(school, year);
+            List<Score> scores = scoreSyncManager.sync(school, year);
 
-                if (CollectionUtils.isEmpty(scores)) {
-                    continue;
-                }
-
-                allScore.addAll(scores);
-            }
-
-            if (CollectionUtils.isEmpty(allScore)) {
+            if (CollectionUtils.isEmpty(scores)) {
                 log.warn("拉取学校信息为空 {}", school);
-                schoolService.setSync(school.getId(), SyncStatus.FAIL);
             } else {
-                scoreSyncService.save(allScore, school);
+                scoreSyncService.save(scores, school, year);
             }
         }
     }

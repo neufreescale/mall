@@ -31,8 +31,8 @@ public class SchoolController {
 
     @GetMapping("/syncAll")
     @ResponseBody
-    public void syncAll() {
-        schoolManager.syncAll();
+    public void syncAll(@RequestParam(name = "year") Integer year) {
+        schoolManager.syncAll(year);
     }
 
     @PostMapping("/upload")

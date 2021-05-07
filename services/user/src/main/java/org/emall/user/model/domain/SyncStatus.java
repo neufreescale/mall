@@ -14,7 +14,8 @@ public enum SyncStatus {
 
     NO_SYNC(0, "未同步"),
     SYNC(1, "已同步"),
-    FAIL(2, "同步失败")
+    FAIL(2, "同步失败"),
+    RETRY(3, "待重试")
     ;
 
     private int id;
