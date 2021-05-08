@@ -5,8 +5,10 @@ import com.google.common.collect.Maps;
 import com.google.common.hash.Hashing;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.diwayou.core.exception.CustomException;
 import org.diwayou.core.json.Json;
+import org.emall.user.model.domain.ScoreRecord;
 import org.emall.user.model.domain.ScoreResult;
 import org.emall.user.model.domain.ScoreWrapper;
 import org.emall.user.model.entity.School;
@@ -26,6 +28,7 @@ import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author gaopeng 2021/5/6
@@ -54,7 +57,6 @@ public class ScoreSyncManager {
         batchIdMap.put(2018, 14);
         batchIdMap.put(2017, 7);
         batchIdMap.put(2016, 7);
-        batchIdMap.put(2015, 0);
     }
 
     private WebClient client;
@@ -107,12 +109,36 @@ public class ScoreSyncManager {
         try {
             ScoreResult data = Json.fromJson(json, ScoreResult.class);
 
-            return data.getItem();
+            List<ScoreRecord> scoreRecords = data.getItem();
+
+            return scoreRecords.stream()
+                    .map(ScoreSyncManager::convert)
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             log.warn("解析失败 {}", json);
 
             return Collections.emptyList();
         }
+    }
+
+    private static Score convert(ScoreRecord record) {
+        Score score = record.to(Score.class);
+
+        if (StringUtils.isNumeric(record.getMin())) {
+            score.setMin(Integer.parseInt(record.getMin()));
+        } else if (StringUtils.isNumeric(record.getAverage())) {
+            score.setMin(Integer.parseInt(record.getAverage()));
+        } else {
+            score.setMin(0);
+        }
+
+        if (StringUtils.isNumeric(record.getRank())) {
+            score.setRank(Integer.parseInt(record.getRank()));
+        } else {
+            score.setRank(10000000 - score.getMin());
+        }
+
+        return score;
     }
 
     private static String encryptSafeCode(String url) {

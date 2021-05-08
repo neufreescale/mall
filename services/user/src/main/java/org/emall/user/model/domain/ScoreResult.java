@@ -2,7 +2,6 @@ package org.emall.user.model.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.emall.user.model.entity.Score;
 
 import java.util.List;
 
@@ -15,5 +14,5 @@ public class ScoreResult {
 
     private Integer numFound;
 
-    private List<Score> item;
+    private List<ScoreRecord> item;
 }
