@@ -2,7 +2,9 @@ package org.diwayou.updown.upload;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.event.SyncReadListener;
+import com.alibaba.excel.exception.ExcelAnalysisException;
 import lombok.extern.slf4j.Slf4j;
+import org.diwayou.core.exception.CustomException;
 import org.diwayou.updown.annotation.RequestFile;
 import org.springframework.core.MethodParameter;
 import org.springframework.util.Assert;
@@ -17,7 +19,6 @@ import org.springframework.web.multipart.support.StandardMultipartHttpServletReq
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -80,11 +81,13 @@ public class UploadArgumentResolver implements HandlerMethodArgumentResolver {
 
     private List<?> readData(MultipartFile file, Class<?> dataClass) {
         try {
-            SyncReadListener readListener = new SyncReadListener();
+            SyncReadListener readListener = new CustomSyncReadListener();
             EasyExcel.read(file.getInputStream(), dataClass, readListener).sheet().doRead();
 
             return readListener.getList();
-        } catch (IOException e) {
+        } catch (ExcelAnalysisException eae) {
+            throw new CustomException(eae.getMessage());
+        } catch (Exception e) {
             log.warn("上传数据失败", e);
 
             throw new RuntimeException("上传数据失败!");
