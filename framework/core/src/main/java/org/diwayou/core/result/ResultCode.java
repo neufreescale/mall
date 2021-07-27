@@ -15,10 +15,10 @@ public enum ResultCode {
     Ok(0, "成功"),
     Error(-1, "失败"),
     ParameterError(-2, "参数有误"),
-    NoLogin(1, "未登录"),
+    NotLogin(1, "未登录"),
     ;
 
-    private int code;
+    private final int code;
 
-    private String msg;
+    private final String msg;
 }

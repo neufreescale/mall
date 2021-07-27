@@ -23,16 +23,13 @@ public class MethodUtil {
                     try {
                         method = iface.getMethod(method.getName(), method.getParameterTypes());
                         break;
-                    }
-                    catch (@SuppressWarnings("unused") NoSuchMethodException noMethod) {
+                    } catch (@SuppressWarnings("unused") NoSuchMethodException noMethod) {
                         // NOSONAR
                     }
                 }
-            }
-            catch (SecurityException ex) {
+            } catch (SecurityException ex) {
                 ReflectionUtils.handleReflectionException(ex);
-            }
-            catch (NoSuchMethodException ex) {
+            } catch (NoSuchMethodException ex) {
                 throw new IllegalStateException(String.format(
                         "@Annotation method '%s' found on bean target class '%s', " +
                                 "but not found in any interface(s) for bean JDK proxy. Either " +

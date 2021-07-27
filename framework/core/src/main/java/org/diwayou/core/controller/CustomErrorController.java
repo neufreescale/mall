@@ -27,9 +27,4 @@ public class CustomErrorController extends AbstractErrorController {
 
         return ResultWrapper.fail(httpStatus.getReasonPhrase());
     }
-
-    @Override
-    public String getErrorPath() {
-        return null;
-    }
 }

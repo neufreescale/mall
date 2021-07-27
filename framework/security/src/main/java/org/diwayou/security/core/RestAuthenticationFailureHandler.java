@@ -17,6 +17,6 @@ import java.io.IOException;
 public class RestAuthenticationFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        WebResponseUtil.writeJson(response, ResultWrapper.fail(ResultCode.NoLogin));
+        WebResponseUtil.writeJson(response, ResultWrapper.fail(ResultCode.NotLogin));
     }
 }

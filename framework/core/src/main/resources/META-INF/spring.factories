@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  org.diwayou.core.mvc.MvcConfiguration
+  org.diwayou.core.mvc.MvcConfiguration,\
+  org.diwayou.core.service.ServiceConfiguration
