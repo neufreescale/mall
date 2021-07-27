@@ -21,7 +21,6 @@ public class ConfigHelper {
         Properties properties = parseToProperties(namespace, key);
 
         if (properties.isEmpty()) {
-            log.warn("配置为空 namespace={},key={}", namespace, key);
             return;
         }
 
@@ -32,10 +31,25 @@ public class ConfigHelper {
         GlobalConfig.put(propertyName, propertyValue);
     }
 
+    public static void injectToEnvironment(String nsKeyPrefix, ConfigurableEnvironment environment) {
+        String nsKey = nsKeyPrefix + ".namespace";
+
+        String ns = environment.getProperty(nsKey);
+        if (StringUtils.isBlank(ns)) {
+            log.warn("No {} but has {} dependency", nsKey, nsKeyPrefix);
+            return;
+        }
+
+        log.info("{} init namespace={}", nsKeyPrefix, ns);
+
+        ConfigHelper.injectToEnvironment(ns, "config", environment);
+        ConfigHelper.injectToEnvironment(ns, environment.getProperty(IConfig.APP_NAME_KEY), environment);
+    }
+
     public static Properties parseToProperties(String namespace, String key) {
         String content = ConfigApi.getProperty(namespace, key);
         if (StringUtils.isBlank(content)) {
-            log.warn("content is empty namespace={},key={}", namespace, key);
+            log.info("content is empty namespace={}, key={}", namespace, key);
             return new Properties();
         }
 

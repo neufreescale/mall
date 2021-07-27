@@ -33,8 +33,7 @@ public class ServiceInfoPrinter implements ApplicationContextAware {
 
             info.append("服务简介: ");
             info.append(service.info());
-            info.append('\n');
-
+            info.append("\n\n");
         });
 
         log.info("{}", info);

@@ -24,6 +24,7 @@
         <module>updown</module>
         <module>security</module>
         <module>http</module>
+        <module>elasticsearch</module>
     </modules>
 
     <properties>

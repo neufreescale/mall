@@ -18,7 +18,7 @@ import java.util.Map;
  * @author gaopeng 2021/2/2
  */
 @Slf4j
-public class MqKafkaListenerAnnotationBeanPostProcessor<K, V> extends KafkaListenerAnnotationBeanPostProcessor {
+public class MqKafkaListenerAnnotationBeanPostProcessor<K, V> extends KafkaListenerAnnotationBeanPostProcessor<K, V> {
 
     @Override
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
@@ -33,7 +33,7 @@ public class MqKafkaListenerAnnotationBeanPostProcessor<K, V> extends KafkaListe
 
         KafkaListener kafkaListener = createFromMqListener(mqListener);
 
-        processListener(endpoint, kafkaListener, bean, method, beanName);
+        processListener(endpoint, kafkaListener, bean, beanName);
     }
 
     private KafkaListener createFromMqListener(MqListener mqListener) {

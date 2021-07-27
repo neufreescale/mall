@@ -1,7 +1,6 @@
 package org.diwayou.mq;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.diwayou.config.ConfigHelper;
 import org.diwayou.config.IConfig;
 import org.diwayou.mq.util.RocketmqConstants;
@@ -18,17 +17,11 @@ public class RocketApplicationContextInitializer implements ApplicationContextIn
     @Override
     public void initialize(ConfigurableApplicationContext applicationContext) {
         ConfigurableEnvironment environment = applicationContext.getEnvironment();
-        String ns = environment.getProperty("rocketmq.namespace");
-        if (StringUtils.isBlank(ns)) {
-            log.warn("No rocketmq.namespace but has rocketmq dependency");
-            return;
-        }
 
-        log.info("rocketmq init namespace={}", ns);
+        ConfigHelper.injectToEnvironment("rocketmq", applicationContext.getEnvironment());
 
-        ConfigHelper.injectToEnvironment(ns, "config", environment);
-
-        ConfigHelper.injectToEnvironment(RocketmqConstants.PRODUCER_GROUP, environment.getProperty(IConfig.APP_NAME_KEY) + "_producer");
-        ConfigHelper.injectToEnvironment(RocketmqConstants.CONSUMER_GROUP, environment.getProperty(IConfig.APP_NAME_KEY) + "_consumer");
+        String appName = environment.getProperty(IConfig.APP_NAME_KEY);
+        ConfigHelper.injectToEnvironment(RocketmqConstants.PRODUCER_GROUP,  appName+ "_producer");
+        ConfigHelper.injectToEnvironment(RocketmqConstants.CONSUMER_GROUP, appName + "_consumer");
     }
 }
