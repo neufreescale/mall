@@ -1,0 +1,11 @@
+spring.elasticsearch.rest.uris=http://localhost:9200
+spring.elasticsearch.rest.read-timeout=10s
+spring.elasticsearch.rest.username=elastic
+spring.elasticsearch.rest.password=password
+
+spring.data.elasticsearch.repositories.enabled=false
+
+spring.autoconfigure.exclude=\
+  org.springframework.boot.actuate.autoconfigure.elasticsearch.ElasticSearchReactiveHealthContributorAutoConfiguration,\
+  org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRepositoriesAutoConfiguration,\
+  org.springframework.boot.autoconfigure.data.elasticsearch.ReactiveElasticsearchRestClientAutoConfiguration

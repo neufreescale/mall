@@ -318,6 +318,11 @@
                 <artifactId>security</artifactId>
                 <version>${framework.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.emall</groupId>
