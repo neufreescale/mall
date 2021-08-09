@@ -2,7 +2,7 @@ package org.diwayou.jdbc.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.shardingsphere.governance.core.yaml.config.YamlGovernanceConfiguration;
+import org.apache.shardingsphere.governance.core.yaml.config.pojo.YamlGovernanceConfiguration;
 
 import java.util.Properties;
 

@@ -2,7 +2,6 @@ package org.diwayou.jdbc.configuration;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.shardingsphere.governance.core.yaml.config.YamlDataSourceConfiguration;
 import org.apache.shardingsphere.infra.yaml.config.YamlConfiguration;
 import org.apache.shardingsphere.infra.yaml.config.YamlRuleConfiguration;
 
@@ -18,7 +17,7 @@ import java.util.Properties;
 @Setter
 public class StaticConfiguration implements YamlConfiguration {
 
-    private Map<String, YamlDataSourceConfiguration> dataSources;
+    private Map<String, Map<String, Object>> dataSources;
 
     private Collection<YamlRuleConfiguration> rules = new LinkedList<>();
 

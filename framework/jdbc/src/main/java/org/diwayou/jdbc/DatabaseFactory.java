@@ -3,13 +3,11 @@ package org.diwayou.jdbc;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shardingsphere.driver.api.ShardingSphereDataSourceFactory;
 import org.apache.shardingsphere.driver.governance.internal.datasource.GovernanceShardingSphereDataSource;
-import org.apache.shardingsphere.driver.governance.internal.util.YamlGovernanceRepositoryConfigurationSwapperUtil;
-import org.apache.shardingsphere.governance.core.yaml.swapper.DataSourceConfigurationYamlSwapper;
+import org.apache.shardingsphere.driver.governance.internal.util.YamlGovernanceConfigurationSwapperUtil;
 import org.apache.shardingsphere.governance.repository.api.config.GovernanceConfiguration;
 import org.apache.shardingsphere.infra.config.RuleConfiguration;
-import org.apache.shardingsphere.infra.config.datasource.DataSourceConfiguration;
-import org.apache.shardingsphere.infra.config.datasource.DataSourceConverter;
 import org.apache.shardingsphere.infra.yaml.engine.YamlEngine;
+import org.apache.shardingsphere.infra.yaml.swapper.YamlDataSourceConfigurationSwapper;
 import org.apache.shardingsphere.infra.yaml.swapper.YamlRuleConfigurationSwapperEngine;
 import org.diwayou.config.ConfigApi;
 import org.diwayou.jdbc.configuration.RootConfiguration;
@@ -19,9 +17,7 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @author gaopeng 2021/1/20
@@ -39,12 +35,7 @@ public class DatabaseFactory {
         RootConfiguration rootConfiguration = YamlEngine.unmarshal(yaml, RootConfiguration.class);
         if (rootConfiguration.getStaticConfig() != null) {
             StaticConfiguration staticConfiguration = rootConfiguration.getStaticConfig();
-            Map<String, DataSourceConfiguration> dataSourceConfigs = staticConfiguration.getDataSources().entrySet().stream().collect(
-                    Collectors.toMap(Map.Entry::getKey,
-                            entry -> new DataSourceConfigurationYamlSwapper().swapToObject(entry.getValue()),
-                            (oldValue, currentValue) -> oldValue,
-                            LinkedHashMap::new));
-            Map<String, DataSource> dataSourceMap = DataSourceConverter.getDataSourceMap(dataSourceConfigs);
+            Map<String, DataSource> dataSourceMap = new YamlDataSourceConfigurationSwapper().swapToDataSources(staticConfiguration.getDataSources());
 
             Collection<RuleConfiguration> ruleConfigurations = new YamlRuleConfigurationSwapperEngine().swapToRuleConfigurations(staticConfiguration.getRules());
 
@@ -52,7 +43,7 @@ public class DatabaseFactory {
         }
 
         if (rootConfiguration.getGovernance() != null) {
-            GovernanceConfiguration configuration = YamlGovernanceRepositoryConfigurationSwapperUtil.marshal(rootConfiguration.getGovernance());
+            GovernanceConfiguration configuration = YamlGovernanceConfigurationSwapperUtil.marshal(rootConfiguration.getGovernance());
 
             return new GovernanceShardingSphereDataSource(configuration);
         }

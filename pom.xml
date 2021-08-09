@@ -41,7 +41,7 @@
         <mysql-connector.version>8.0.20</mysql-connector.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis-spring.version>2.0.4</mybatis-spring.version>
-        <shardingsphere.version>5.0.0-alpha</shardingsphere.version>
+        <shardingsphere.version>5.0.0-beta</shardingsphere.version>
         <curator.version>5.1.0</curator.version>
         <squirrel.version>0.3.8</squirrel.version>
         <apollo.version>1.7.0</apollo.version>
@@ -139,7 +139,7 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-governance-repository-apollo</artifactId>
+                <artifactId>shardingsphere-governance-repository-zookeeper-curator</artifactId>
                 <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>

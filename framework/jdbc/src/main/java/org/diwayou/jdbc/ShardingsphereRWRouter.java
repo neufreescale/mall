@@ -14,7 +14,7 @@ public class ShardingsphereRWRouter {
     public Object determineReadOrWriteDB(ProceedingJoinPoint pjp) throws Throwable {
         String methodName = pjp.getSignature().getName();
         if (StringUtils.startsWith(methodName, MASTER_PREFIX)) {
-            HintManager.getInstance().setPrimaryRouteOnly();
+            HintManager.getInstance().setWriteRouteOnly();
         }
         return pjp.proceed();
     }

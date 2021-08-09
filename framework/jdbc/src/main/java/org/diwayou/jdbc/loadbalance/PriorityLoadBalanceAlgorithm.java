@@ -3,7 +3,7 @@ package org.diwayou.jdbc.loadbalance;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shardingsphere.replicaquery.spi.ReplicaLoadBalanceAlgorithm;
+import org.apache.shardingsphere.readwritesplitting.spi.ReplicaLoadBalanceAlgorithm;
 
 import java.util.List;
 import java.util.Properties;
@@ -23,9 +23,9 @@ public class PriorityLoadBalanceAlgorithm implements ReplicaLoadBalanceAlgorithm
     private int[] weights;
 
     @Override
-    public String getDataSource(String name, String masterDataSourceName, List<String> slaveDataSourceNames) {
-        if (weights.length != slaveDataSourceNames.size() + 1) {
-            return random(slaveDataSourceNames);
+    public String getDataSource(String name, String writeDataSourceName, List<String> readDataSourceNames) {
+        if (weights.length != readDataSourceNames.size() + 1) {
+            return random(readDataSourceNames);
         }
 
         int[] areaEnds = new int[weights.length];
@@ -39,14 +39,14 @@ public class PriorityLoadBalanceAlgorithm implements ReplicaLoadBalanceAlgorithm
         for (int i = 0; i < areaEnds.length; i++) {
             if (rand < areaEnds[i]) {
                 if (i == 0) {
-                    return masterDataSourceName;
+                    return writeDataSourceName;
                 } else {
-                    return slaveDataSourceNames.get(i - 1);
+                    return readDataSourceNames.get(i - 1);
                 }
             }
         }
 
-        return random(slaveDataSourceNames);
+        return random(readDataSourceNames);
     }
 
     private static String random(List<String> slaveDataSourceNames) {

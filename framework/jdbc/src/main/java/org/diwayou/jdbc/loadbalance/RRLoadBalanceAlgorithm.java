@@ -3,7 +3,7 @@ package org.diwayou.jdbc.loadbalance;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.shardingsphere.replicaquery.spi.ReplicaLoadBalanceAlgorithm;
+import org.apache.shardingsphere.readwritesplitting.spi.ReplicaLoadBalanceAlgorithm;
 
 import java.util.List;
 import java.util.Properties;
@@ -27,14 +27,14 @@ public class RRLoadBalanceAlgorithm implements ReplicaLoadBalanceAlgorithm {
     }
 
     @Override
-    public String getDataSource(final String name, final String masterDataSourceName, final List<String> slaveDataSourceNames) {
-        if (CollectionUtils.isEmpty(slaveDataSourceNames)) {
-            return masterDataSourceName;
+    public String getDataSource(final String name, final String writeDataSourceName, final List<String> readDataSourceNames) {
+        if (CollectionUtils.isEmpty(readDataSourceNames)) {
+            return writeDataSourceName;
         }
 
         AtomicInteger count = COUNTS.containsKey(name) ? COUNTS.get(name) : new AtomicInteger(0);
         COUNTS.putIfAbsent(name, count);
-        count.compareAndSet(slaveDataSourceNames.size(), 0);
-        return slaveDataSourceNames.get(Math.abs(count.getAndIncrement()) % slaveDataSourceNames.size());
+        count.compareAndSet(readDataSourceNames.size(), 0);
+        return readDataSourceNames.get(Math.abs(count.getAndIncrement()) % readDataSourceNames.size());
     }
 }

@@ -6,6 +6,8 @@ import org.emall.search.model.response.ItemPageResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author gaopeng 2021/7/27
  */
@@ -22,8 +24,8 @@ public class ItemSearchController {
     }
 
     @GetMapping(path = "/index")
-    public Item index() {
-        return itemSearchManager.index();
+    public List<Item> index(@RequestParam(name = "size", defaultValue = "10") Integer size) {
+        return itemSearchManager.index(size);
     }
 
     @GetMapping(path = "/q")

@@ -3,7 +3,7 @@ package org.diwayou.jdbc.loadbalance;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.shardingsphere.replicaquery.spi.ReplicaLoadBalanceAlgorithm;
+import org.apache.shardingsphere.readwritesplitting.spi.ReplicaLoadBalanceAlgorithm;
 
 import java.util.List;
 import java.util.Properties;
@@ -24,11 +24,11 @@ public class RandomLoadBalanceAlgorithm implements ReplicaLoadBalanceAlgorithm {
     }
 
     @Override
-    public String getDataSource(final String name, final String masterDataSourceName, final List<String> slaveDataSourceNames) {
-        if (CollectionUtils.isEmpty(slaveDataSourceNames)) {
-            return masterDataSourceName;
+    public String getDataSource(final String name, final String writeDataSourceName, final List<String> readDataSourceNames) {
+        if (CollectionUtils.isEmpty(readDataSourceNames)) {
+            return writeDataSourceName;
         }
 
-        return slaveDataSourceNames.get(ThreadLocalRandom.current().nextInt(slaveDataSourceNames.size()));
+        return readDataSourceNames.get(ThreadLocalRandom.current().nextInt(readDataSourceNames.size()));
     }
 }
