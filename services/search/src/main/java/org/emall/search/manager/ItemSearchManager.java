@@ -30,10 +30,14 @@ public class ItemSearchManager {
 
     @PostConstruct
     public void init() {
-        IndexOperations indexOperations = restTemplate.indexOps(Item.class);
-        if (!indexOperations.exists()) {
-            indexOperations.createWithMapping();
-            log.info("创建es索引items成功");
+        try {
+            IndexOperations indexOperations = restTemplate.indexOps(Item.class);
+            if (!indexOperations.exists()) {
+                indexOperations.createWithMapping();
+                log.info("创建es索引items成功");
+            }
+        } catch (Exception e) {
+            log.warn("创建es索引失败", e);
         }
     }
 
