@@ -1,0 +1,36 @@
+{
+  "analysis": {
+    "analyzer": {
+      "pinyin_analyzer": {
+        "tokenizer": "my_pinyin",
+        "char_filter": [
+          "whitespace_filter"
+        ]
+      },
+      "suggest_search_analyzer": {
+        "type": "custom",
+        "tokenizer": "standard",
+        "filter": [
+          "lowercase"
+        ],
+        "char_filter": [
+          "whitespace_filter"
+        ]
+      }
+    },
+    "tokenizer": {
+      "my_pinyin": {
+        "type": "pinyin",
+        "keep_original": true,
+        "remove_duplicated_term": true
+      }
+    },
+    "char_filter": {
+      "whitespace_filter": {
+        "type": "pattern_replace",
+        "pattern": "\\s",
+        "replacement": ""
+      }
+    }
+  }
+}

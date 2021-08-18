@@ -6,6 +6,7 @@ import lombok.experimental.Accessors;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.CompletionField;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Setting;
 import org.springframework.data.elasticsearch.core.completion.Completion;
 
 /**
@@ -14,12 +15,13 @@ import org.springframework.data.elasticsearch.core.completion.Completion;
 @Document(indexName = "item_suggest")
 @Data
 @NoArgsConstructor
+@Setting(settingPath = "setting/item_suggest.json")
 @Accessors(chain = true)
 public class ItemSuggest {
 
     @Id
     private String id;
 
-    @CompletionField(analyzer = "pinyin", searchAnalyzer = "pinyin")
+    @CompletionField(analyzer = "pinyin_analyzer", searchAnalyzer = "suggest_search_analyzer", preserveSeparators = false, preservePositionIncrements = false)
     private Completion suggest;
 }

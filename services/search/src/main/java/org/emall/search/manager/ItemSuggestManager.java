@@ -41,10 +41,18 @@ public class ItemSuggestManager {
                 log.info("创建es索引item-suggest成功");
             }
 
-            addSuggest("1", Collections.singletonList("iphone 13"));
-            addSuggest("2", Collections.singletonList("手机壳"));
-            addSuggest("3", Collections.singletonList("AirPods"));
-            addSuggest("4", Collections.singletonList("耐克鞋"));
+            String[] keywords = new String[] {
+                    "iphone 13",
+                    "手机壳",
+                    "AirPods",
+                    "耐克鞋",
+                    "笔记本apple",
+                    "笔记本联想"
+            };
+
+            for (int i = 0; i < keywords.length; i++) {
+                addSuggest(String.valueOf(i + 1), Collections.singletonList(keywords[i]));
+            }
         } catch (Exception e) {
             log.warn("初始化item-suggest失败", e);
         }
