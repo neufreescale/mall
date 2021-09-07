@@ -25,7 +25,7 @@ public class SchoolController {
     @GetMapping("/sync/{id}")
     @ResponseBody
     public void sync(@PathVariable("id") Integer schoolId,
-                     @RequestParam(name = "year", defaultValue = "2020") Integer year) {
+                     @RequestParam(name = "year", defaultValue = "2021") Integer year) {
         schoolManager.sync(schoolId, year);
     }
 
@@ -43,7 +43,7 @@ public class SchoolController {
 
     @GetMapping("/download")
     @ResponseFile
-    public Collection<ScoreResponse> download(@RequestParam(name = "year", defaultValue = "2020") Integer year) {
+    public Collection<ScoreResponse> download(@RequestParam(name = "year", defaultValue = "2021") Integer year) {
         return schoolManager.download(year);
     }
 }
