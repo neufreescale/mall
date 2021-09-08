@@ -3,13 +3,14 @@ package org.emall.user.model.response;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.diwayou.core.bean.Convertible;
 
 /**
  * @author gaopeng 2021/5/6
  */
 @Data
 @NoArgsConstructor
-public class ScoreResponse {
+public class ScoreResponse implements Convertible {
 
     @ExcelProperty("学校")
     private String scName;
