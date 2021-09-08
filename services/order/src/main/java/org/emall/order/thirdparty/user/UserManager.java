@@ -13,7 +13,7 @@ import java.util.Objects;
 @Component
 public class UserManager {
 
-    @DubboReference
+    @DubboReference(check = false)
     private UserApi userApi;
 
     public UserDto get(Long id) {

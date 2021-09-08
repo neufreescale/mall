@@ -11,10 +11,6 @@ import org.elasticsearch.search.aggregations.bucket.histogram.Histogram;
 import org.elasticsearch.search.aggregations.bucket.histogram.ParsedHistogram;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.emall.search.model.domain.Score;
 import org.emall.search.model.response.ScorePageResponse;
 import org.emall.search.model.response.ScoreStatResponse;
@@ -33,8 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.multiMatchQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * @author gaopeng 2021/9/7
@@ -73,16 +68,12 @@ public class ScoreSearchManager {
     }
 
     public ScorePageResponse search(String name) {
-        QueryBuilder queryBuilder = multiMatchQuery(name, "scName", "spName")
-                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
-        SortBuilder<FieldSortBuilder> sortBuilder = SortBuilders.fieldSort("sort").order(SortOrder.ASC);
-        AbstractAggregationBuilder<?> aggregationBuilder = AggregationBuilders.terms("count_per_school")
-                .field("scName.raw");
+        QueryBuilder queryBuilder = boolQuery().should(multiMatchQuery(name, "scName", "spName")
+                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS))
+                .should(termQuery("scName.raw", name).boost(5));
 
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
-                .addAggregation(aggregationBuilder)
                 .withQuery(queryBuilder)
-                .withSort(sortBuilder)
                 .build();
 
         SearchHits<Score> hits = restTemplate.search(nativeSearchQuery, Score.class);
