@@ -67,10 +67,21 @@ public class ScoreSearchManager {
         return scores;
     }
 
-    public ScorePageResponse search(String name) {
-        QueryBuilder queryBuilder = boolQuery().should(multiMatchQuery(name, "scName", "spName")
-                .type(MultiMatchQueryBuilder.Type.BEST_FIELDS))
-                .should(termQuery("scName.raw", name).boost(5));
+    public ScorePageResponse search(String name, int minSort, int maxSort) {
+        QueryBuilder rangeQueryBuilder = rangeQuery("sort")
+                .lte(maxSort)
+                .gte(minSort);
+        QueryBuilder nameQuery;
+        if (name.contains("大学")) {
+            nameQuery = termQuery("scName.raw", name)
+                    .boost(5);
+        } else {
+            nameQuery = multiMatchQuery(name, "scName", "spName")
+                    .type(MultiMatchQueryBuilder.Type.BEST_FIELDS);
+        }
+        QueryBuilder queryBuilder = boolQuery()
+                .must(rangeQueryBuilder)
+                .must(nameQuery);
 
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withQuery(queryBuilder)
@@ -114,10 +125,12 @@ public class ScoreSearchManager {
         for (Histogram.Bucket bucket : parsedHistogram.getBuckets()) {
             ScoreStatResponse response = new ScoreStatResponse(bucket.getKeyAsString());
 
+            int rangeStart = ((Double) bucket.getKey()).intValue();
             ParsedStringTerms parsedStringTerms = bucket.getAggregations().get("school");
             List<ScoreStatResponse.Stat> statList = Lists.newArrayListWithCapacity(parsedStringTerms.getBuckets().size());
             for (Terms.Bucket termBucket : parsedStringTerms.getBuckets()) {
-                statList.add(new ScoreStatResponse.Stat(termBucket.getKeyAsString(), termBucket.getDocCount()));
+                statList.add(new ScoreStatResponse.Stat(termBucket.getKeyAsString(), termBucket.getDocCount(),
+                        buildDetailUrl(termBucket.getKeyAsString(), rangeStart, rangeStart + interval)));
             }
 
             response.setStatList(statList);
@@ -125,5 +138,9 @@ public class ScoreSearchManager {
         }
 
         return result;
+    }
+
+    private static String buildDetailUrl(String name, int minSort, int maxSort) {
+        return String.format("http://localhost:8081/public/search/score/q?name=%s&m=%d&n=%d", name, minSort, maxSort);
     }
 }

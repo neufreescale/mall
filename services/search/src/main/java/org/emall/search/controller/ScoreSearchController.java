@@ -1,7 +1,6 @@
 package org.emall.search.controller;
 
 import org.emall.search.manager.ScoreSearchManager;
-import org.emall.search.model.domain.Score;
 import org.emall.search.model.response.ScorePageResponse;
 import org.emall.search.model.response.ScoreStatResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +22,15 @@ public class ScoreSearchController {
     private ScoreSearchManager scoreSearchManager;
 
     @GetMapping(path = "/index")
-    public List<Score> index() {
-        return scoreSearchManager.index();
+    public void index() {
+        scoreSearchManager.index();
     }
 
     @GetMapping(path = "/q")
-    public ScorePageResponse search(@RequestParam(name = "name", required = false) String name) {
-        return scoreSearchManager.search(name);
+    public ScorePageResponse search(@RequestParam(name = "name", required = false) String name,
+                                    @RequestParam(name = "m", required = false, defaultValue = "0") int minSort,
+                                    @RequestParam(name = "n", required = false, defaultValue = "25000") int maxSort) {
+        return scoreSearchManager.search(name, minSort, maxSort);
     }
 
     @GetMapping(path = "/stat")

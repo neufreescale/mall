@@ -26,5 +26,7 @@ public class ScoreStatResponse {
         private final String schoolName;
 
         private final long count;
+
+        private final String detailUrl;
     }
 }
