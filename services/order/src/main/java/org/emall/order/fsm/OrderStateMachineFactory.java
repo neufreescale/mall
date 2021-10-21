@@ -1,16 +1,17 @@
 package org.emall.order.fsm;
 
+import com.alibaba.cola.statemachine.StateMachine;
+import com.alibaba.cola.statemachine.builder.StateMachineBuilder;
+import com.alibaba.cola.statemachine.builder.StateMachineBuilderFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.diwayou.fsm.action.PublishContextAsEventAction;
-import org.diwayou.fsm.util.ExportUtil;
+import org.diwayou.ffsm.action.PublishContextAsEventAction;
+import org.diwayou.ffsm.util.ExportUtil;
 import org.emall.order.model.command.OrderCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.support.TransactionOperations;
 import org.springframework.util.Assert;
-import org.squirrelframework.foundation.fsm.StateMachineBuilder;
-import org.squirrelframework.foundation.fsm.StateMachineBuilderFactory;
 
 import javax.annotation.PostConstruct;
 
@@ -21,22 +22,25 @@ import javax.annotation.PostConstruct;
 @Slf4j
 public class OrderStateMachineFactory {
 
+    private static final String MACHINE_ID = "OrderStateMachine";
+
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private TransactionOperations transactionOperations;
 
-    private StateMachineBuilder<OrderStateMachine, OrderState, OrderEvent, OrderCommand> builder;
+    private StateMachineBuilder<OrderState, OrderEvent, OrderCommand> builder;
 
-    private PublishContextAsEventAction<OrderStateMachine, OrderState, OrderEvent, OrderCommand> action;
+    private StateMachine<OrderState, OrderEvent, OrderCommand> stateMachine;
+
+    private PublishContextAsEventAction<OrderState, OrderEvent, OrderCommand> action;
 
     @PostConstruct
     public void init() {
         action = PublishContextAsEventAction.create(eventPublisher);
 
-        builder = StateMachineBuilderFactory.create(OrderStateMachine.class,
-                OrderState.class, OrderEvent.class, OrderCommand.class);
+        builder = StateMachineBuilderFactory.create();
 
         createTransition(OrderState.Init, OrderState.New, OrderEvent.Create);
         createTransition(OrderState.New, OrderState.Paid, OrderEvent.Pay);
@@ -44,6 +48,8 @@ public class OrderStateMachineFactory {
         createTransition(OrderState.Confirmed, OrderState.Processing, OrderEvent.Process);
         createTransition(OrderState.Processing, OrderState.Completed, OrderEvent.Complete);
         createTransition(OrderState.Paid, OrderState.Cancelled, OrderEvent.Cancel);
+
+        stateMachine = builder.build(MACHINE_ID);
     }
 
     private void createTransition(OrderState from, OrderState to, OrderEvent event) {
@@ -55,11 +61,9 @@ public class OrderStateMachineFactory {
         Assert.state(command.getLastState() != null, "lastState不能为null");
         Assert.state(command.getEvent() != null, "event不能为null");
 
-        OrderStateMachine fsm = builder.newStateMachine(command.getLastState());
+        OrderState currentState = stateMachine.fireEvent(command.getLastState(), command.getEvent(), command);
 
-        fsm.fire(command.getEvent(), command);
-
-        command.setCurrentState(fsm.getCurrentState());
+        command.setCurrentState(currentState);
 
         // 所有延迟执行都在一个数据库事务中
         if (command.hasDelayExecute()) {
@@ -70,8 +74,6 @@ public class OrderStateMachineFactory {
     }
 
     public void export(String filename) {
-        OrderStateMachine fsm = builder.newStateMachine(OrderState.Init);
-
-        ExportUtil.toSvg(fsm, filename);
+        ExportUtil.toSvg(stateMachine, filename);
     }
 }

@@ -8,7 +8,6 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -49,14 +48,6 @@ public class BaseController {
 
         if (exception instanceof BindException) {
             Optional<String> message = ((BindException) exception).getBindingResult().getAllErrors().stream()
-                    .map(ObjectError::getDefaultMessage)
-                    .findFirst();
-
-            return ResultWrapper.fail(message.orElse("参数绑定错误!"));
-        }
-
-        if (exception instanceof MethodArgumentNotValidException) {
-            Optional<String> message = ((MethodArgumentNotValidException) exception).getBindingResult().getAllErrors().stream()
                     .map(ObjectError::getDefaultMessage)
                     .findFirst();
 

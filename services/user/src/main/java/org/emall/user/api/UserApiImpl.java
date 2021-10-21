@@ -1,6 +1,7 @@
 package org.emall.user.api;
 
 import org.apache.dubbo.config.annotation.DubboService;
+import org.apache.shenyu.client.dubbo.common.annotation.ShenyuDubboClient;
 import org.emall.user.client.api.UserApi;
 import org.emall.user.client.dto.ScoreDto;
 import org.emall.user.client.dto.UserDto;
@@ -25,6 +26,7 @@ public class UserApiImpl implements UserApi {
     private ScoreService scoreService;
 
     @Override
+    @ShenyuDubboClient(path = "/user/get", desc = "查询用户信息")
     public UserDto get(Long id) {
         User user = userService.get(id);
 
@@ -32,6 +34,7 @@ public class UserApiImpl implements UserApi {
     }
 
     @Override
+    @ShenyuDubboClient(path = "/score/rank", desc = "查询分数信息")
     public Collection<ScoreDto> rank(int year) {
         return scoreService.rank(year).stream()
                 .map(r -> r.to(ScoreDto.class))

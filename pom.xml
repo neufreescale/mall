@@ -45,6 +45,7 @@
         <shardingsphere.version>5.0.0-beta</shardingsphere.version>
         <curator.version>5.1.0</curator.version>
         <squirrel.version>0.3.8</squirrel.version>
+        <cola.statemachine.version>4.0.1</cola.statemachine.version>
         <apollo.version>1.7.0</apollo.version>
         <dubbo.version>2.7.8</dubbo.version>
         <rocketmq.version>2.2.0</rocketmq.version>
@@ -167,6 +168,11 @@
                 <groupId>org.squirrelframework</groupId>
                 <artifactId>squirrel-foundation</artifactId>
                 <version>${squirrel.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba.cola</groupId>
+                <artifactId>cola-component-statemachine</artifactId>
+                <version>${cola.statemachine.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ctrip.framework.apollo</groupId>
@@ -297,6 +303,11 @@
             <dependency>
                 <groupId>org.emall</groupId>
                 <artifactId>fsm</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.emall</groupId>
+                <artifactId>ffsm</artifactId>
                 <version>${framework.version}</version>
             </dependency>
             <dependency>

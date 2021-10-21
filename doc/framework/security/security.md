@@ -31,3 +31,6 @@
 - ExceptionTranslationFilter
 - FilterSecurityInterceptor
 - SwitchUserFilter
+
+# 访问链接例子
+http://localhost:8081/order/export?source_=base&t_=test
