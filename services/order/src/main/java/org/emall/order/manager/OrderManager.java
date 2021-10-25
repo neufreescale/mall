@@ -43,10 +43,10 @@ public class OrderManager {
         log.info("{}", ConfigApi.env().env());
 
         OrderCommand command = new OrderCreateCommand()
-                .setLastState(OrderState.Init)
-                .setEvent(OrderEvent.Create)
                 .setOrder(order);
-        orderStateMachineFactory.execute(command);
+        OrderState curState = orderStateMachineFactory.fireEvent(OrderState.Init, OrderEvent.Create, command);
+
+        log.info("curState={}, command={}", curState, command);
 
         return new OrderCreateResponse();
     }
@@ -56,10 +56,8 @@ public class OrderManager {
         order.setId(1L);
 
         OrderCommand command = new OrderPaidCommand()
-                .setLastState(OrderState.New)
-                .setEvent(OrderEvent.Pay)
                 .setOrder(order);
-        orderStateMachineFactory.execute(command);
+        orderStateMachineFactory.fireEvent(OrderState.New, OrderEvent.Pay, command);
     }
 
     public void export() {

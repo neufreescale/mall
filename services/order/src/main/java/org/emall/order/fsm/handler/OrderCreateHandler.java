@@ -15,6 +15,7 @@ public class OrderCreateHandler {
     @EventListener(OrderCreateCommand.class)
     public void onCreate(OrderCreateCommand command) {
         log.info("order created id={}", command);
+        command.getOrder().setCode("abc");
     }
 
     @EventListener(OrderCreateCommand.class)

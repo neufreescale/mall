@@ -1,43 +1,22 @@
 package org.emall.order.model.command;
 
-import com.google.common.collect.Lists;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
+import org.diwayou.ffsm.AbstractContext;
 import org.emall.order.fsm.OrderEvent;
 import org.emall.order.fsm.OrderState;
 import org.emall.order.model.entity.Order;
 
-import java.util.List;
-import java.util.function.Consumer;
-
 /**
- * @author gaopeng 2021/1/20
+ * @author gaopeng 2021/10/25
  */
+@EqualsAndHashCode(callSuper = false)
 @Data
+@ToString(callSuper = true)
 @Accessors(chain = true)
-public abstract class OrderCommand {
+public abstract class OrderCommand extends AbstractContext<OrderState, OrderEvent> {
 
     private Order order;
-
-    private OrderEvent event;
-
-    private OrderState lastState;
-
-    private OrderState currentState;
-
-    private final List<Consumer<OrderCommand>> delayExecute = Lists.newArrayList();
-
-    public void delayExecute(Consumer<OrderCommand> execute) {
-        delayExecute.add(execute);
-    }
-
-    public boolean hasDelayExecute() {
-        return !delayExecute.isEmpty();
-    }
-
-    public void runDelayExecute() {
-        for (Consumer<OrderCommand> execute : delayExecute) {
-            execute.accept(this);
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package org.diwayou.ffsm.action;
 
 import com.alibaba.cola.statemachine.Action;
+import org.diwayou.ffsm.AbstractContext;
 import org.springframework.context.ApplicationEventPublisher;
 
 /**
@@ -20,6 +21,14 @@ public class PublishContextAsEventAction<S, E, C> implements Action<S, E, C> {
 
     @Override
     public void execute(S from, S to, E event, C context) {
+        if (context instanceof AbstractContext) {
+            AbstractContext<S, E>  ctx = (AbstractContext<S, E>) context;
+
+            ctx.setFrom(from);
+            ctx.setTo(to);
+            ctx.setEvent(event);
+        }
+
         eventPublisher.publishEvent(context);
     }
 }
