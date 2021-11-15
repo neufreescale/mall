@@ -1,7 +1,7 @@
 package org.diwayou.jdbc;
 
-import org.apache.shardingsphere.governance.core.yaml.config.pojo.YamlGovernanceConfiguration;
-import org.apache.shardingsphere.governance.core.yaml.config.pojo.YamlRegistryCenterConfiguration;
+import org.apache.shardingsphere.infra.yaml.config.pojo.mode.YamlModeConfiguration;
+import org.apache.shardingsphere.infra.yaml.config.pojo.mode.YamlPersistRepositoryConfiguration;
 import org.apache.shardingsphere.infra.yaml.engine.YamlEngine;
 import org.diwayou.jdbc.configuration.RootConfiguration;
 import org.junit.jupiter.api.Test;
@@ -16,18 +16,20 @@ public class GovernanceConfigurationTest {
 
     @Test
     public void governanceConfigTest() throws IOException {
-        YamlRegistryCenterConfiguration registryConfig = new YamlRegistryCenterConfiguration();
-        registryConfig.setType("Zookeeper");
-        registryConfig.setServerLists("localhost:2181");
-        registryConfig.setProps(new Properties());
+        Properties properties = new Properties();
+        properties.setProperty("server-lists", "localhost:2181");
+        properties.setProperty("namespace", "op.db.test");
+        YamlPersistRepositoryConfiguration repositoryConfiguration = new YamlPersistRepositoryConfiguration();
+        repositoryConfiguration.setType("Zookeeper");
+        repositoryConfiguration.setProps(properties);
 
-        YamlGovernanceConfiguration configuration = new YamlGovernanceConfiguration();
-        configuration.setName("op.db.test");
-        configuration.setRegistryCenter(registryConfig);
-        configuration.setOverwrite(false);
+        YamlModeConfiguration modeConfiguration = new YamlModeConfiguration();
+        modeConfiguration.setOverwrite(false);
+        modeConfiguration.setType("Cluster");
+        modeConfiguration.setRepository(repositoryConfiguration);
 
         RootConfiguration root = new RootConfiguration();
-        root.setGovernance(configuration);
+        root.setDynamicConfig(modeConfiguration);
 
         String yaml = YamlEngine.marshal(root);
 

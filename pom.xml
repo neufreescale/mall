@@ -42,14 +42,14 @@
         <mysql-connector.version>8.0.20</mysql-connector.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis-spring.version>2.0.4</mybatis-spring.version>
-        <shardingsphere.version>5.0.0-beta</shardingsphere.version>
+        <shardingsphere.version>5.0.0</shardingsphere.version>
         <curator.version>5.1.0</curator.version>
         <squirrel.version>0.3.8</squirrel.version>
         <cola.statemachine.version>4.0.1</cola.statemachine.version>
         <apollo.version>1.7.0</apollo.version>
         <dubbo.version>2.7.8</dubbo.version>
         <rocketmq.version>2.2.0</rocketmq.version>
-        <elasticjob.version>3.0.0-beta</elasticjob.version>
+        <elasticjob.version>3.0.1</elasticjob.version>
         <easyexcel.version>2.2.10</easyexcel.version>
 
         <framework.version>1.0-SNAPSHOT</framework.version>
@@ -141,12 +141,12 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-jdbc-governance</artifactId>
+                <artifactId>shardingsphere-jdbc-core</artifactId>
                 <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-governance-repository-zookeeper-curator</artifactId>
+                <artifactId>shardingsphere-cluster-mode-repository-zookeeper-curator</artifactId>
                 <version>${shardingsphere.version}</version>
             </dependency>
             <dependency>
@@ -483,6 +483,7 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>${maven.plugin.deploy.version}</version>
                 <executions>

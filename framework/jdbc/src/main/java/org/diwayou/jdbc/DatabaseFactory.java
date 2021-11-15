@@ -2,13 +2,12 @@ package org.diwayou.jdbc;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shardingsphere.driver.api.ShardingSphereDataSourceFactory;
-import org.apache.shardingsphere.driver.governance.internal.datasource.GovernanceShardingSphereDataSource;
-import org.apache.shardingsphere.driver.governance.internal.util.YamlGovernanceConfigurationSwapperUtil;
-import org.apache.shardingsphere.governance.repository.api.config.GovernanceConfiguration;
 import org.apache.shardingsphere.infra.config.RuleConfiguration;
+import org.apache.shardingsphere.infra.config.mode.ModeConfiguration;
+import org.apache.shardingsphere.infra.yaml.config.swapper.YamlDataSourceConfigurationSwapper;
+import org.apache.shardingsphere.infra.yaml.config.swapper.YamlRuleConfigurationSwapperEngine;
+import org.apache.shardingsphere.infra.yaml.config.swapper.mode.ModeConfigurationYamlSwapper;
 import org.apache.shardingsphere.infra.yaml.engine.YamlEngine;
-import org.apache.shardingsphere.infra.yaml.swapper.YamlDataSourceConfigurationSwapper;
-import org.apache.shardingsphere.infra.yaml.swapper.YamlRuleConfigurationSwapperEngine;
 import org.diwayou.config.ConfigApi;
 import org.diwayou.jdbc.configuration.RootConfiguration;
 import org.diwayou.jdbc.configuration.StaticConfiguration;
@@ -42,10 +41,10 @@ public class DatabaseFactory {
             return ShardingSphereDataSourceFactory.createDataSource(dataSourceMap, ruleConfigurations, staticConfiguration.getProps());
         }
 
-        if (rootConfiguration.getGovernance() != null) {
-            GovernanceConfiguration configuration = YamlGovernanceConfigurationSwapperUtil.marshal(rootConfiguration.getGovernance());
+        if (rootConfiguration.getDynamicConfig() != null) {
+            ModeConfiguration configuration = new ModeConfigurationYamlSwapper().swapToObject(rootConfiguration.getDynamicConfig());
 
-            return new GovernanceShardingSphereDataSource(configuration);
+            return ShardingSphereDataSourceFactory.createDataSource(configuration);
         }
 
         throw new RuntimeException("DataSource config illegal " + yaml);
