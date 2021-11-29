@@ -50,6 +50,8 @@ public class DownloadReturnValueHandler implements HandlerMethodReturnValueHandl
         HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
         Assert.state(response != null, "No HttpServletResponse");
 
+        mavContainer.setRequestHandled(true);
+
         if (returnValue == null) {
             WebResponseUtil.writeJson(response, ResultWrapper.success());
 
