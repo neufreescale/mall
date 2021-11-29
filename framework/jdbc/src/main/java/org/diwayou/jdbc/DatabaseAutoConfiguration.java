@@ -34,18 +34,13 @@ public class DatabaseAutoConfiguration implements EnvironmentAware {
     private Environment environment;
 
     @Bean
-    public DatabaseFactory databaseFactory() {
-        return new DatabaseFactory();
-    }
-
-    @Bean
     @ConditionalOnMissingBean(name = "dataSource")
-    public DataSource dataSource(DatabaseFactory databaseFactory) {
+    public DataSource dataSource() {
         String ns = environment.getProperty("database.namespace");
         log.info("auto config database with namespace {}", ns);
 
         try {
-            return databaseFactory.create(ns);
+            return DatabaseFactory.create(ns);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

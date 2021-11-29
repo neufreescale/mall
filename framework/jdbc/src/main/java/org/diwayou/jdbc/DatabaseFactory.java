@@ -25,7 +25,7 @@ public class DatabaseFactory {
 
     private static final String KEY = "db";
 
-    public DataSource create(String namespace) throws IOException, SQLException {
+    public static DataSource create(String namespace) throws IOException, SQLException {
         String yaml = ConfigApi.getProperty(namespace, KEY);
         if (StringUtils.isBlank(yaml)) {
             throw new RuntimeException(String.format("yaml is empty %s %s", namespace, KEY));
