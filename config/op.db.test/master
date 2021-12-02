@@ -1,0 +1,7 @@
+ip=127.0.0.1
+port=3306
+dbName=demo_ds_master
+userName=root
+password=
+minimumIdle=1
+maximumPoolSize=10

@@ -1,8 +1,0 @@
-dynamicConfig:
-  overwrite: false
-  repository:
-    props:
-      namespace: op.db.test
-      server-lists: localhost:2181
-    type: Zookeeper
-  type: Cluster

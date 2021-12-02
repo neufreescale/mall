@@ -1,6 +1,7 @@
 package org.diwayou.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
+import org.diwayou.jdbc.datasource.EmallDataSource;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -40,7 +41,7 @@ public class DatabaseAutoConfiguration implements EnvironmentAware {
         log.info("auto config database with namespace {}", ns);
 
         try {
-            return DatabaseFactory.create(ns);
+            return new EmallDataSource(ns);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

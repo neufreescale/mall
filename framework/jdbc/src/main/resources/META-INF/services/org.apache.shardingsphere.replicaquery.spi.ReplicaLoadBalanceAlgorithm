@@ -1,5 +1,0 @@
-org.diwayou.jdbc.loadbalance.RRLoadBalanceAlgorithm
-org.diwayou.jdbc.loadbalance.RandomLoadBalanceAlgorithm
-org.apache.shardingsphere.replicaquery.algorithm.RoundRobinReplicaLoadBalanceAlgorithm
-org.apache.shardingsphere.replicaquery.algorithm.RandomReplicaLoadBalanceAlgorithm
-org.diwayou.jdbc.loadbalance.PriorityLoadBalanceAlgorithm

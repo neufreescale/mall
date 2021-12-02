@@ -42,8 +42,8 @@
         <mysql-connector.version>8.0.20</mysql-connector.version>
         <mybatis.version>3.5.4</mybatis.version>
         <mybatis-spring.version>2.0.4</mybatis-spring.version>
-        <shardingsphere.version>5.0.0</shardingsphere.version>
         <curator.version>5.1.0</curator.version>
+        <zookeeper.version>3.6.3</zookeeper.version>
         <squirrel.version>0.3.8</squirrel.version>
         <cola.statemachine.version>4.0.1</cola.statemachine.version>
         <apollo.version>1.7.0</apollo.version>
@@ -140,16 +140,6 @@
                 <version>${mysql-connector.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-jdbc-core</artifactId>
-                <version>${shardingsphere.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.shardingsphere</groupId>
-                <artifactId>shardingsphere-cluster-mode-repository-zookeeper-curator</artifactId>
-                <version>${shardingsphere.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-recipes</artifactId>
                 <version>${curator.version}</version>
@@ -163,6 +153,11 @@
                 <groupId>org.apache.curator</groupId>
                 <artifactId>curator-client</artifactId>
                 <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>zookeeper</artifactId>
+                <version>${zookeeper.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.squirrelframework</groupId>

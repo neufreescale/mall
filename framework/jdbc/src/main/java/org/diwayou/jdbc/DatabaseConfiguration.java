@@ -9,6 +9,7 @@ import org.springframework.aop.aspectj.*;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 import javax.sql.DataSource;
 import java.io.FileNotFoundException;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author gaopeng 2021/1/25
@@ -36,7 +38,9 @@ public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware
 
     private static final String DAO_XML_PATH = "classpath:mybatis/**/*Mapper.xml";
 
-    private static final String[] DAO_BASE_PACKAGE = {"org.emall.**.dao"};
+    private static final String CONFIG_XML_PATH = "classpath:mybatis-config.xml";
+
+    private static final String[] DAO_BASE_PACKAGE = {"org.**.dao"};
 
     private static final String TRANSACTION_POINTCUT_EXPRESSION = "execution(* org.emall..*.service..*.*(..))";
 
@@ -48,7 +52,8 @@ public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware
     private BeanFactory beanFactory;
 
     @Bean
-    public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource) throws Exception {
+    public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource dataSource,
+                                                       ObjectProvider<SqlSessionFactoryBeanCustomizer> sqlSessionFactoryBeanCustomizerProvider) throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
         sqlSessionFactoryBean.setDataSource(dataSource);
@@ -60,6 +65,17 @@ public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware
         } catch (FileNotFoundException e) {
             log.warn(e.getMessage());
         }
+
+        String configPath = environment.getProperty("mybatis.config.path", CONFIG_XML_PATH);
+
+        Resource resource = new PathMatchingResourcePatternResolver().getResource(configPath);
+        if (resource.exists()) {
+            sqlSessionFactoryBean.setConfigLocation(resource);
+        } else {
+            log.info("未找到mybatis配置文件{}", resource);
+        }
+
+        sqlSessionFactoryBeanCustomizerProvider.forEach(customizer -> customizer.customize(sqlSessionFactoryBean));
 
         return sqlSessionFactoryBean;
     }
@@ -99,22 +115,33 @@ public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware
         return environment.getProperty("transactionScanExpr", TRANSACTION_POINTCUT_EXPRESSION);
     }
 
-    /**
-     * 事务拦截器
-     */
     @Bean
-    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public AspectJExpressionPointcutAdvisor transactionAdvisor() {
+    public TransactionInterceptor emallTransactionInterceptor() {
         TransactionInterceptor transactionInterceptor = new TransactionInterceptor();
         transactionInterceptor.setTransactionAttributeSource(nameMatchTransactionAttributeSource());
         transactionInterceptor.setTransactionManagerBeanName("transactionManager");
         transactionInterceptor.setBeanFactory(this.beanFactory);
 
+        return transactionInterceptor;
+    }
+
+    /**
+     * 事务拦截器
+     */
+    @Bean
+    @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
+    public AspectJExpressionPointcutAdvisor transactionAdvisor(TransactionInterceptor emallTransactionInterceptor) {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
-        advisor.setAdvice(transactionInterceptor);
+        advisor.setAdvice(emallTransactionInterceptor);
         advisor.setExpression(getTransactionPointcutExpression());
 
         return advisor;
+    }
+
+    @Bean
+    public DataSourceRWRouter dataSourceRWRouter(List<TransactionInterceptor> transactionInterceptors) {
+        // 参数依赖transactionInterceptors为了解决依赖关系问题
+        return new DataSourceRWRouter();
     }
 
     /**
@@ -122,14 +149,14 @@ public class DatabaseConfiguration implements EnvironmentAware, BeanFactoryAware
      */
     @Bean
     @Role(BeanDefinition.ROLE_INFRASTRUCTURE)
-    public AspectJExpressionPointcutAdvisor determineReadOrWriteDBAdvisor() throws NoSuchMethodException {
+    public AspectJExpressionPointcutAdvisor determineReadOrWriteDBAdvisor(DataSourceRWRouter dataSourceRWRouter) throws NoSuchMethodException {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
         advisor.setExpression(getTransactionPointcutExpression());
         advisor.setOrder(Integer.MIN_VALUE);
 
-        AspectInstanceFactory aspectInstanceFactory = new SingletonAspectInstanceFactory(new ShardingsphereRWRouter());
+        AspectInstanceFactory aspectInstanceFactory = new SingletonAspectInstanceFactory(dataSourceRWRouter);
         AspectJAroundAdvice aroundAdvice = new AspectJAroundAdvice(
-                ShardingsphereRWRouter.class.getMethod("determineReadOrWriteDB", ProceedingJoinPoint.class),
+                DataSourceRWRouter.class.getMethod("determineReadOrWriteDB", ProceedingJoinPoint.class),
                 (AspectJExpressionPointcut) advisor.getPointcut(),
                 aspectInstanceFactory);
 
